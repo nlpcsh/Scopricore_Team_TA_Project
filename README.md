@@ -1,0 +1,1 @@
+# Scopricore_Team_TA_Project
