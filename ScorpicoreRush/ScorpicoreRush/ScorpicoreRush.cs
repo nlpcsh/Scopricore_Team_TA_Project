@@ -18,8 +18,12 @@
 
     class ScorpicoreRush
     {
+        
         static void Main()
         {
+            
+            Menu.ShowMenu();
+            Console.Clear();
             Random rand = new Random();
             Queue<Position> HeroPosition = new Queue<Position>();
             Position HeroStartPosition = new Position(20, 20);
