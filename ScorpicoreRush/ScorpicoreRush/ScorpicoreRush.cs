@@ -1,10 +1,11 @@
 ﻿namespace ScorpicoreRush
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
+using System.Media;
+using System.Text;
+using System.Threading;
 
     struct Position
     {
@@ -60,6 +61,14 @@
                 Console.WriteLine("-");
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
 
+            }
+        }
+        public static void FireWeapon()
+        {
+            using (SoundPlayer fireWeapon = new SoundPlayer(@"..\..\FireWeapon.wav"))
+            {
+                fireWeapon.Play();
+               //Thread.Sleep(50);
             }
         }
         static void Main()
@@ -151,7 +160,7 @@
                         
                     else if (key.Key == ConsoleKey.Spacebar)
                     {
-
+                        FireWeapon();
                         points++;
                             int y = HeroStartPosition.Y-2;
                             int x = HeroStartPosition.X;
@@ -179,6 +188,7 @@
                             
                         
                     }
+                   
                     
                     //TODO: When the game is finished logic
                     if (key.Key == ConsoleKey.Q)
