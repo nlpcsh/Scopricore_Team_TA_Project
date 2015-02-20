@@ -18,7 +18,38 @@
 
     class ScorpicoreRush
     {
-
+        static int gamefieldWidth = 70;
+        static int windowWidth = 100;
+        static int windowHeight = 30;
+        static int playerLives = 10;
+        static int gameLevel = 1;
+        static int points = 0;
+        static void PrintOnPosition(int positionX, int positionY, char itemCharacter, ConsoleColor itemColor = ConsoleColor.Gray)
+        {
+            Console.ForegroundColor = itemColor;
+            Console.SetCursorPosition(positionX, positionY);
+            Console.Write(itemCharacter);
+        }
+        static void PrintTextInGameMenu(int positionX, int positionY, string menuText, ConsoleColor textColor = ConsoleColor.Gray)
+        {
+            Console.ForegroundColor = textColor;
+            Console.SetCursorPosition(positionX, positionY);
+            Console.Write(menuText);
+        }
+        static void DrawGameMenu()
+        {
+            for (int i = 0; i < Console.WindowHeight; i++)
+            {
+                PrintOnPosition(gamefieldWidth, i, '|');
+            }
+            PrintTextInGameMenu(gamefieldWidth + 1, 0, "-----------------------------");
+            PrintTextInGameMenu(gamefieldWidth + 4, 1, "*** SCORPICORE RUSH ***");
+            PrintTextInGameMenu(gamefieldWidth + 1, 2, "-----------------------------");
+            PrintTextInGameMenu(gamefieldWidth + 11, 4, "Points: " + points);
+            PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: " + playerLives);
+            PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: " + gameLevel);
+            
+        }
         static void Main()
         {
             int points = 0;
@@ -31,15 +62,17 @@
             HeroPosition.Enqueue(HeroStartPosition);
 
             Queue<Position> bulletPosition = new Queue<Position>();
-           
+
+                      
 
             string hero = "<^>";
             string bullet = "o";
 
             Console.CursorVisible = false;
-            Console.BufferHeight = Console.WindowHeight;
-            Console.BufferWidth = Console.WindowWidth;
+            Console.BufferHeight = Console.WindowHeight = windowHeight;
+            Console.BufferWidth = Console.WindowWidth = windowWidth;
 
+            DrawGameMenu();
             //moving the Hero
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;      //<---------Eventually change color with levels
