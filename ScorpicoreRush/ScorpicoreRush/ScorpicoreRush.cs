@@ -94,6 +94,14 @@
 
             while (true)
             {
+<<<<<<< HEAD
+=======
+                for (int i = 0; i < Console.WindowHeight; i++)
+                {
+                    Console.SetCursorPosition(Console.BufferWidth - 30, i);
+                    Console.Write("||");
+                }
+>>>>>>> origin/master
 
                 Console.CursorVisible = false;
                 if (Console.KeyAvailable)
