@@ -40,6 +40,8 @@
             Console.BufferHeight = Console.WindowHeight;
             Console.BufferWidth = Console.WindowWidth;
 
+           
+
             //moving the Hero
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;      //<---------Eventually change color with levels
@@ -50,6 +52,12 @@
 
             while (true)
             {
+                for (int i = 0; i < Console.WindowHeight; i++)
+                {
+                    Console.SetCursorPosition(Console.BufferWidth - 16, i);
+                    Console.Write("||");
+                }
+
                 Console.CursorVisible = false;
                 if (Console.KeyAvailable)
                 {
