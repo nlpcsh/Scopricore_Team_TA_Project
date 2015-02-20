@@ -48,7 +48,7 @@
             PrintTextInGameMenu(gamefieldWidth + 11, 4, "Points: " + points);
             PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: " + playerLives);
             PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: " + gameLevel);
-            
+
         }
         static void Main()
         {
@@ -62,8 +62,8 @@
             HeroPosition.Enqueue(HeroStartPosition);
 
             Queue<Position> bulletPosition = new Queue<Position>();
+           
 
-                      
 
             string hero = "<^>";
             string bullet = "o";
@@ -83,10 +83,16 @@
 
             while (true)
             {
+                for (int i = 0; i < Console.WindowHeight; i++)
+                {
+                    Console.SetCursorPosition(Console.BufferWidth - 16, i);
+                    Console.Write("||");
+                }
+
                 Console.CursorVisible = false;
                 if (Console.KeyAvailable)
                 {
-                    ConsoleKeyInfo key = Console.ReadKey();
+                    ConsoleKeyInfo key = Console.ReadKey(true);
                     
 
                     if (key.Key == ConsoleKey.LeftArrow)
