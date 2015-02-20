@@ -90,8 +90,18 @@ using System.Threading;
             string bullet = "o";
 
             Console.CursorVisible = false;
-            Console.BufferHeight = Console.WindowHeight = windowHeight;
-            Console.BufferWidth = Console.WindowWidth = windowWidth;
+            for (int i = 20; i <= windowHeight; i++)
+            {
+                Console.BufferHeight = Console.WindowHeight = i;
+                //Thread.Sleep(20);
+            }
+            for (int i = 20; i <= windowWidth; i++)
+            {
+                Console.BufferWidth = Console.WindowWidth = i;
+                //Thread.Sleep(20);
+            }
+            
+            
 
 
             DrawGameMenu();
