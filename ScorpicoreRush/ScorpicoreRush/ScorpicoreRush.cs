@@ -53,7 +53,7 @@
                 Console.CursorVisible = false;
                 if (Console.KeyAvailable)
                 {
-                    ConsoleKeyInfo key = Console.ReadKey();
+                    ConsoleKeyInfo key = Console.ReadKey(true);
                     
 
                     if (key.Key == ConsoleKey.LeftArrow)
@@ -91,7 +91,7 @@
 
                             if (HeroStartPosition.X == Console.BufferWidth - 20)
                             {
-                                HeroStartPosition.X = HeroStartPosition.X - 2;
+                                HeroStartPosition.X = HeroStartPosition.X - 1;
                             }
 
                         }
