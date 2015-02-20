@@ -91,22 +91,42 @@
 
                             if (HeroStartPosition.X == Console.BufferWidth - 20)
                             {
-                                HeroStartPosition.X = HeroStartPosition.X - 2;
+                                HeroStartPosition.X = HeroStartPosition.X - 1;
                             }
 
                         }
-                        points++;
+                        
                     }
-
+                        
                     else if (key.Key == ConsoleKey.Spacebar)
                     {
-                         Position bulletStartPosition = new Position();
-                         bulletPosition.Enqueue(bulletStartPosition);
-                        foreach (Position position in HeroPosition)
-                        {
-                            Console.SetCursorPosition(position.X, position.Y-1);
-                            Console.WriteLine(bullet);
-                        }
+
+                        
+                            int y = HeroStartPosition.Y-2;
+                            int x = HeroStartPosition.X;
+
+                            while (y>=0)
+                            {
+                                 Thread.Sleep(50);
+                                 Console.SetCursorPosition(x,y+1);
+                                 Console.WriteLine("  ");
+                                 Console.SetCursorPosition(x,y);
+                                 Console.ForegroundColor = ConsoleColor.Cyan;
+                                 switch (y % 2)
+                                 {
+                                    case 0: Console.Write("/"); break;
+                                    case 1: Console.Write("-"); break;
+                                    case 2: Console.Write("\\"); break;
+                                    case 3: Console.Write("|"); break;
+                                 }
+                                 Console.SetCursorPosition(0, 0);
+                                 Console.Write(new string(' ', Console.WindowWidth));
+                                 Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                 y--;
+                            
+                            }
+                            
+                        
                     }
                     
                     //TODO: When the game is finished logic
@@ -120,7 +140,7 @@
                     }
                 }
 
-                //Thread.Sleep(20);
+             // Thread.Sleep(20);
                 
 
 
