@@ -24,30 +24,31 @@
         static int playerLives = 10;
         static int gameLevel = 1;
         static int points = 0;
-        static void PrintOnPosition(int positionX, int positionY, string itemCharacter, ConsoleColor itemColor = ConsoleColor.Gray)
+        static void PrintOnPosition(int positionX, int positionY, string itemCharacter, ConsoleColor color)
         {
-            Console.ForegroundColor = itemColor;
+            Console.ForegroundColor = color;
             Console.SetCursorPosition(positionX, positionY);
             Console.Write(itemCharacter);
         }
-        static void PrintTextInGameMenu(int positionX, int positionY, string menuText, ConsoleColor textColor = ConsoleColor.Gray)
+        static void PrintTextInGameMenu(int positionX, int positionY, string menuText, ConsoleColor color)
         {
-            Console.ForegroundColor = textColor;
+           Console.ForegroundColor = color;
             Console.SetCursorPosition(positionX, positionY);
             Console.Write(menuText);
+
         }
         static void DrawGameMenu()
         {
             for (int i = 0; i < Console.WindowHeight-9; i++)
             {
-                PrintOnPosition(gamefieldWidth, i, "||");
+                PrintOnPosition(gamefieldWidth, i, "||", ConsoleColor.DarkGray);
             }
-            PrintTextInGameMenu(gamefieldWidth + 2, 0, "-----------------------------");
-            PrintTextInGameMenu(gamefieldWidth + 4, 1, "*** SCORPICORE RUSH ***");
-            PrintTextInGameMenu(gamefieldWidth + 2, 2, "-----------------------------");
-            PrintTextInGameMenu(gamefieldWidth + 11, 4, "Points: " + points);
-            PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: " + playerLives);
-            PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: " + gameLevel);
+            PrintTextInGameMenu(gamefieldWidth + 2, 0, "-----------------------------", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 4, 1, "*** SCORPICORE RUSH ***", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 2, 2, "-----------------------------", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 11, 4, "Points: ", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: " + playerLives, ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: " + gameLevel, ConsoleColor.DarkGray);
 
         }
         public static void DrawDownBorder()
@@ -82,8 +83,11 @@
             Console.CursorVisible = false;
             Console.BufferHeight = Console.WindowHeight = windowHeight;
             Console.BufferWidth = Console.WindowWidth = windowWidth;
-            DrawDownBorder();
+
+
             DrawGameMenu();
+            DrawDownBorder();
+            
             //moving the Hero
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;      //<---------Eventually change color with levels
@@ -94,15 +98,9 @@
 
             while (true)
             {
-<<<<<<< HEAD
-=======
-                for (int i = 0; i < Console.WindowHeight; i++)
-                {
-                    Console.SetCursorPosition(Console.BufferWidth - 30, i);
-                    Console.Write("||");
-                }
->>>>>>> origin/master
 
+                PrintTextInGameMenu(gamefieldWidth + 18, 4, points.ToString(), ConsoleColor.Gray);
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.CursorVisible = false;
                 if (Console.KeyAvailable)
                 {
@@ -116,7 +114,7 @@
                         Position dwarfEnd = new Position(HeroStartPosition.X -= 1, HeroStartPosition.Y);
                         HeroPosition.Enqueue(dwarfEnd);
                         Console.SetCursorPosition(0,20);
-                        Console.Write(new string(' ', Console.WindowWidth-32)); 
+                        Console.Write(new string(' ', Console.WindowWidth-30)); 
                         foreach (Position position in HeroPosition)
                         {
                             Console.SetCursorPosition(position.X - 1, position.Y);
@@ -154,7 +152,7 @@
                     else if (key.Key == ConsoleKey.Spacebar)
                     {
 
-                        
+                        points++;
                             int y = HeroStartPosition.Y-2;
                             int x = HeroStartPosition.X;
 
