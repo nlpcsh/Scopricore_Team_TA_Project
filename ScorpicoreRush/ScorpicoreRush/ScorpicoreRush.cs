@@ -28,10 +28,13 @@
             Random rand = new Random();
             Queue<Position> HeroPosition = new Queue<Position>();
             Position HeroStartPosition = new Position(20, 20);
-
             HeroPosition.Enqueue(HeroStartPosition);
 
-            string hero = "(о)(о)";
+            Queue<Position> bulletPosition = new Queue<Position>();
+           
+
+            string hero = "<^>";
+            string bullet = "o";
 
             Console.CursorVisible = false;
             Console.BufferHeight = Console.WindowHeight;
@@ -51,26 +54,21 @@
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo key = Console.ReadKey();
-                    if (key.Key == ConsoleKey.Spacebar)
-                    {
-                        foreach (Position position in HeroPosition)
-                        {
-                            Console.SetCursorPosition(position.X, position.Y);
-                            Console.WriteLine(hero);
-                        }
-                    }
+                    
 
-                    else if (key.Key == ConsoleKey.LeftArrow)
+                    if (key.Key == ConsoleKey.LeftArrow)
                     {
 
                         HeroPosition.Dequeue();
                         Position dwarfEnd = new Position(HeroStartPosition.X -= 1, HeroStartPosition.Y);
                         HeroPosition.Enqueue(dwarfEnd);
-                        Console.Clear();
+                        Console.SetCursorPosition(0,20);
+                        Console.Write(new string(' ', Console.WindowWidth)); 
                         foreach (Position position in HeroPosition)
                         {
                             Console.SetCursorPosition(position.X - 1, position.Y);
                             Console.WriteLine(hero);
+
                             if (HeroStartPosition.X == 1)
                             {
                                 HeroStartPosition.X = HeroStartPosition.X + 1;
@@ -83,18 +81,33 @@
                         HeroPosition.Dequeue();
                         Position dwarfEnd = new Position(HeroStartPosition.X += 1, HeroStartPosition.Y);
                         HeroPosition.Enqueue(dwarfEnd);
-                        Console.Clear();
+                        Console.SetCursorPosition(0, 20);
+                        Console.Write(new string(' ', Console.WindowWidth)); 
+                       
                         foreach (Position position in HeroPosition)
                         {
                             Console.SetCursorPosition(position.X + 1, position.Y);
                             Console.WriteLine(hero);
+
                             if (HeroStartPosition.X == Console.BufferWidth - 20)
                             {
-                                HeroStartPosition.X = HeroStartPosition.X - 1;
+                                HeroStartPosition.X = HeroStartPosition.X - 2;
                             }
+
                         }
                         points++;
-                    } 
+                    }
+
+                    else if (key.Key == ConsoleKey.Spacebar)
+                    {
+                         Position bulletStartPosition = new Position();
+                         bulletPosition.Enqueue(bulletStartPosition);
+                        foreach (Position position in HeroPosition)
+                        {
+                            Console.SetCursorPosition(position.X, position.Y-1);
+                            Console.WriteLine(bullet);
+                        }
+                    }
                     
                     //TODO: When the game is finished logic
                     if (key.Key == ConsoleKey.Q)
