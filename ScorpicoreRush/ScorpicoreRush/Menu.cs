@@ -9,18 +9,17 @@
 
         public static void SetScreen()
         {
-            Console.WindowHeight = 30;
-            Console.BufferHeight = 30;
-            Console.WindowWidth = 80;
-            Console.BufferWidth = 80;
-            Console.BackgroundColor = ConsoleColor.Yellow;
+      
+            Console.WindowWidth = Console.WindowHeight;
+            Console.BufferWidth = Console.BufferHeight;
+            
         }
         public static void ShowMenu()
         {
 
             Console.Clear();
             Console.CursorVisible = false;
-            //  Console.ForegroundColor = ConsoleColor.Yellow;
+ 
 
 
             string[] choices = { "Start", "HighScores", "Help" };
@@ -45,7 +44,8 @@
             }
             if (choices[choice] == "HighScores")
             {
-                //  TODO: Show HighScores 
+
+                Stats.PrintScores();
 
             }
 
@@ -60,11 +60,7 @@
             int choice = 0;
             int numItems = choices.Length-1;
             int i = 0;
-            //Console.SetCursorPosition(0, i);
-            //Console.ForegroundColor = ConsoleColor.Black;
-            //Console.BackgroundColor = ConsoleColor.White;
-            //Console.WriteLine(choices[choice]);
-            //Console.ResetColor();
+
            
             while (true)
             { 
