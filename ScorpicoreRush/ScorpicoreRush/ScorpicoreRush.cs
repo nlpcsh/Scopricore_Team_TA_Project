@@ -48,8 +48,8 @@ using System.Threading;
             PrintTextInGameMenu(gamefieldWidth + 4, 1, "*** SCORPICORE RUSH ***", ConsoleColor.DarkGray);
             PrintTextInGameMenu(gamefieldWidth + 2, 2, "-----------------------------", ConsoleColor.DarkGray);
             PrintTextInGameMenu(gamefieldWidth + 11, 4, "Points: ", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: " + playerLives, ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: " + gameLevel, ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: "+playerLives, ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: ", ConsoleColor.DarkGray);
 
         }
         public static void DrawDownBorder()
@@ -74,6 +74,7 @@ using System.Threading;
         static void Main()
         {
             int points = 0;
+            int level = 0;
             Menu.ShowMenu();
             Console.Clear();
 
@@ -119,6 +120,7 @@ using System.Threading;
             {
 
                 PrintTextInGameMenu(gamefieldWidth + 18, 4, points.ToString(), ConsoleColor.Gray);
+                PrintTextInGameMenu(gamefieldWidth + 18, 8, level.ToString(), ConsoleColor.Gray);
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.CursorVisible = false;
                 if (Console.KeyAvailable)
@@ -172,6 +174,7 @@ using System.Threading;
                     {
                         FireWeapon();
                         points++;
+                        level = points / 10;
                             int y = HeroStartPosition.Y-2;
                             int x = HeroStartPosition.X;
 
@@ -195,19 +198,19 @@ using System.Threading;
                                  y--;
                             
                             }
-                            
-                        
+
                     }
-                   
+                    
                     
                     //TODO: When the game is finished logic
                     if (key.Key == ConsoleKey.Q)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 0);
-                        Stats.ShowScore(points);
+                        Stats.ShowScore(points, level);
                         Console.ResetColor();
                         Menu.ShowMenu();
+                        
                     }
                 }
 
