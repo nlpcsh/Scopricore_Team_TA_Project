@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Menu.cs" />
     <Compile Include="ScorpicoreRush.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stats.cs" />
@@ -48,13 +49,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-<<<<<<< HEAD
   <ItemGroup>
     <Content Include="Statistics.txt" />
     <Content Include="Versions\HeroMovement.txt" />
   </ItemGroup>
-=======
->>>>>>> origin/master
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
