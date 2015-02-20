@@ -24,7 +24,7 @@
         static int playerLives = 10;
         static int gameLevel = 1;
         static int points = 0;
-        static void PrintOnPosition(int positionX, int positionY, char itemCharacter, ConsoleColor itemColor = ConsoleColor.Gray)
+        static void PrintOnPosition(int positionX, int positionY, string itemCharacter, ConsoleColor itemColor = ConsoleColor.Gray)
         {
             Console.ForegroundColor = itemColor;
             Console.SetCursorPosition(positionX, positionY);
@@ -38,17 +38,28 @@
         }
         static void DrawGameMenu()
         {
-            for (int i = 0; i < Console.WindowHeight; i++)
+            for (int i = 0; i < Console.WindowHeight-9; i++)
             {
-                PrintOnPosition(gamefieldWidth, i, '|');
+                PrintOnPosition(gamefieldWidth, i, "||");
             }
-            PrintTextInGameMenu(gamefieldWidth + 1, 0, "-----------------------------");
+            PrintTextInGameMenu(gamefieldWidth + 2, 0, "-----------------------------");
             PrintTextInGameMenu(gamefieldWidth + 4, 1, "*** SCORPICORE RUSH ***");
-            PrintTextInGameMenu(gamefieldWidth + 1, 2, "-----------------------------");
+            PrintTextInGameMenu(gamefieldWidth + 2, 2, "-----------------------------");
             PrintTextInGameMenu(gamefieldWidth + 11, 4, "Points: " + points);
             PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: " + playerLives);
             PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: " + gameLevel);
 
+        }
+        public static void DrawDownBorder()
+        {
+            for (int i = 0; i < Console.WindowWidth; i++)
+            {
+                Console.SetCursorPosition(i, Console.WindowHeight - 9);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("-");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+
+            }
         }
         static void Main()
         {
@@ -71,7 +82,7 @@
             Console.CursorVisible = false;
             Console.BufferHeight = Console.WindowHeight = windowHeight;
             Console.BufferWidth = Console.WindowWidth = windowWidth;
-
+            DrawDownBorder();
             DrawGameMenu();
             //moving the Hero
 
@@ -83,11 +94,6 @@
 
             while (true)
             {
-                for (int i = 0; i < Console.WindowHeight; i++)
-                {
-                    Console.SetCursorPosition(Console.BufferWidth - 16, i);
-                    Console.Write("||");
-                }
 
                 Console.CursorVisible = false;
                 if (Console.KeyAvailable)
@@ -102,7 +108,7 @@
                         Position dwarfEnd = new Position(HeroStartPosition.X -= 1, HeroStartPosition.Y);
                         HeroPosition.Enqueue(dwarfEnd);
                         Console.SetCursorPosition(0,20);
-                        Console.Write(new string(' ', Console.WindowWidth)); 
+                        Console.Write(new string(' ', Console.WindowWidth-32)); 
                         foreach (Position position in HeroPosition)
                         {
                             Console.SetCursorPosition(position.X - 1, position.Y);
@@ -121,14 +127,14 @@
                         Position dwarfEnd = new Position(HeroStartPosition.X += 1, HeroStartPosition.Y);
                         HeroPosition.Enqueue(dwarfEnd);
                         Console.SetCursorPosition(0, 20);
-                        Console.Write(new string(' ', Console.WindowWidth)); 
+                        Console.Write(new string(' ', Console.WindowWidth-32)); 
                        
                         foreach (Position position in HeroPosition)
                         {
                             Console.SetCursorPosition(position.X + 1, position.Y);
                             Console.WriteLine(hero);
 
-                            if (HeroStartPosition.X == Console.BufferWidth - 20)
+                            if (HeroStartPosition.X == Console.BufferWidth - 34)
                             {
                                 HeroStartPosition.X = HeroStartPosition.X - 1;
                             }
@@ -159,7 +165,7 @@
                                     case 3: Console.Write("|"); break;
                                  }
                                  Console.SetCursorPosition(0, 0);
-                                 Console.Write(new string(' ', Console.WindowWidth));
+                                 Console.Write(new string(' ', Console.WindowWidth-32));
                                  Console.ForegroundColor = ConsoleColor.DarkYellow;
                                  y--;
                             
