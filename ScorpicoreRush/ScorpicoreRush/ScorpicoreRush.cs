@@ -18,12 +18,13 @@
 
     class ScorpicoreRush
     {
-        
+
         static void Main()
         {
-            
+            int points = 0;
             Menu.ShowMenu();
             Console.Clear();
+
             Random rand = new Random();
             Queue<Position> HeroPosition = new Queue<Position>();
             Position HeroStartPosition = new Position(20, 20);
@@ -92,10 +93,23 @@
                                 HeroStartPosition.X = HeroStartPosition.X - 1;
                             }
                         }
+                        points++;
+                    } 
+                    
+                    //TODO: When the game is finished logic
+                    if (key.Key == ConsoleKey.Q)
+                    {
+                        Console.Clear();
+                        Console.SetCursorPosition(0, 0);
+                        Stats.ShowScore(points);
+                        Console.ResetColor();
+                        Menu.ShowMenu();
                     }
                 }
 
                 //Thread.Sleep(20);
+                
+
 
             }
 
