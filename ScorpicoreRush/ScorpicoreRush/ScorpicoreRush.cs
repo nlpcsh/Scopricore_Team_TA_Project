@@ -1,11 +1,11 @@
 ﻿namespace ScorpicoreRush
 {
     using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Media;
-using System.Text;
-using System.Threading;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Media;
+    using System.Text;
+    using System.Threading;
 
     struct Position
     {
@@ -22,9 +22,8 @@ using System.Threading;
         static int gamefieldWidth = 70;
         static int windowWidth = 100;
         static int windowHeight = 30;
-        static int playerLives = 10;
-        static int gameLevel = 1;
-        static int points = 0;
+
+
         static void PrintOnPosition(int positionX, int positionY, string itemCharacter, ConsoleColor color)
         {
             Console.ForegroundColor = color;
@@ -33,14 +32,14 @@ using System.Threading;
         }
         static void PrintTextInGameMenu(int positionX, int positionY, string menuText, ConsoleColor color)
         {
-           Console.ForegroundColor = color;
+            Console.ForegroundColor = color;
             Console.SetCursorPosition(positionX, positionY);
             Console.Write(menuText);
 
         }
         static void DrawGameMenu()
         {
-            for (int i = 0; i < Console.WindowHeight-9; i++)
+            for (int i = 0; i < Console.WindowHeight - 9; i++)
             {
                 PrintOnPosition(gamefieldWidth, i, "||", ConsoleColor.DarkGray);
             }
@@ -48,7 +47,7 @@ using System.Threading;
             PrintTextInGameMenu(gamefieldWidth + 4, 1, "*** SCORPICORE RUSH ***", ConsoleColor.DarkGray);
             PrintTextInGameMenu(gamefieldWidth + 2, 2, "-----------------------------", ConsoleColor.DarkGray);
             PrintTextInGameMenu(gamefieldWidth + 11, 4, "Points: ", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: "+playerLives, ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: ", ConsoleColor.DarkGray);
             PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: ", ConsoleColor.DarkGray);
 
         }
@@ -68,13 +67,14 @@ using System.Threading;
             using (SoundPlayer fireWeapon = new SoundPlayer(@"..\..\FireWeapon.wav"))
             {
                 fireWeapon.Play();
-               //Thread.Sleep(50);
+                //Thread.Sleep(50);
             }
         }
         static void Main()
         {
             int points = 0;
             int level = 0;
+            char playerLives = '\u2665';
             Menu.ShowMenu();
             Console.Clear();
 
@@ -84,7 +84,7 @@ using System.Threading;
             HeroPosition.Enqueue(HeroStartPosition);
 
             Queue<Position> bulletPosition = new Queue<Position>();
-           
+
 
 
             string hero = "<^>";
@@ -101,13 +101,13 @@ using System.Threading;
                 Console.BufferWidth = Console.WindowWidth = i;
                 //Thread.Sleep(20);
             }
-            
-            
+
+
 
 
             DrawGameMenu();
             DrawDownBorder();
-            
+
             //moving the Hero
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;      //<---------Eventually change color with levels
@@ -120,13 +120,16 @@ using System.Threading;
             {
 
                 PrintTextInGameMenu(gamefieldWidth + 18, 4, points.ToString(), ConsoleColor.Gray);
+                PrintTextInGameMenu(gamefieldWidth + 18, 6, new string(playerLives, 3), ConsoleColor.Red);  //TODO: Print this according to the logic for loosing lives 
                 PrintTextInGameMenu(gamefieldWidth + 18, 8, level.ToString(), ConsoleColor.Gray);
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.CursorVisible = false;
+
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo key = Console.ReadKey(true);
-                    
+
+
 
                     if (key.Key == ConsoleKey.LeftArrow)
                     {
@@ -134,8 +137,8 @@ using System.Threading;
                         HeroPosition.Dequeue();
                         Position dwarfEnd = new Position(HeroStartPosition.X -= 1, HeroStartPosition.Y);
                         HeroPosition.Enqueue(dwarfEnd);
-                        Console.SetCursorPosition(0,20);
-                        Console.Write(new string(' ', Console.WindowWidth-30)); 
+                        Console.SetCursorPosition(0, 20);
+                        Console.Write(new string(' ', Console.WindowWidth - 30));
                         foreach (Position position in HeroPosition)
                         {
                             Console.SetCursorPosition(position.X - 1, position.Y);
@@ -154,8 +157,8 @@ using System.Threading;
                         Position dwarfEnd = new Position(HeroStartPosition.X += 1, HeroStartPosition.Y);
                         HeroPosition.Enqueue(dwarfEnd);
                         Console.SetCursorPosition(0, 20);
-                        Console.Write(new string(' ', Console.WindowWidth-32)); 
-                       
+                        Console.Write(new string(' ', Console.WindowWidth - 32));
+
                         foreach (Position position in HeroPosition)
                         {
                             Console.SetCursorPosition(position.X + 1, position.Y);
@@ -167,41 +170,51 @@ using System.Threading;
                             }
 
                         }
-                        
+
                     }
-                        
+
                     else if (key.Key == ConsoleKey.Spacebar)
                     {
                         FireWeapon();
                         points++;
                         level = points / 10;
-                            int y = HeroStartPosition.Y-2;
-                            int x = HeroStartPosition.X;
-
-                            while (y>=0)
+                        int y = HeroStartPosition.Y - 2;
+                        int x = HeroStartPosition.X;
+                        char currentWeapon = SelectWeapon();
+                        while (y >= 0)
+                        {
+                            Thread.Sleep(20);
+                            Console.SetCursorPosition(x, y + 1);
+                            Console.WriteLine("  ");
+                            Console.SetCursorPosition(x, y);
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            if (currentWeapon == '^' || currentWeapon == '@' || currentWeapon == '*' || currentWeapon == 'o' || currentWeapon == '!' || currentWeapon == '$')
                             {
-                                 Thread.Sleep(50);
-                                 Console.SetCursorPosition(x,y+1);
-                                 Console.WriteLine("  ");
-                                 Console.SetCursorPosition(x,y);
-                                 Console.ForegroundColor = ConsoleColor.Cyan;
-                                 switch (y % 2)
-                                 {
+                                Console.WriteLine(currentWeapon);
+                            }
+
+                            else
+                            {
+                                switch (y % 2)
+                                {
                                     case 0: Console.Write("/"); break;
                                     case 1: Console.Write("-"); break;
                                     case 2: Console.Write("\\"); break;
                                     case 3: Console.Write("|"); break;
-                                 }
-                                 Console.SetCursorPosition(0, 0);
-                                 Console.Write(new string(' ', Console.WindowWidth-32));
-                                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                                 y--;
-                            
+                                }
                             }
+                            Console.SetCursorPosition(0, 0);
+                            Console.Write(new string(' ', Console.WindowWidth - 32));
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            y--;
+
+                        }
 
                     }
-                    
-                    
+
+
+
+
                     //TODO: When the game is finished logic
                     if (key.Key == ConsoleKey.Q)
                     {
@@ -210,15 +223,52 @@ using System.Threading;
                         Stats.ShowScore(points, level);
                         Console.ResetColor();
                         Menu.ShowMenu();
-                        
+
                     }
                 }
 
-             // Thread.Sleep(20);
-                
+                // Thread.Sleep(20);
+
 
 
             }
+
+        }
+        public static char SelectWeapon()
+        {
+            char currentWeapon = '0';
+            char[] weapons = { '^', '@', '*', 'o', '!', '$' };
+            ConsoleKeyInfo key = Console.ReadKey(true);
+            ConsoleKeyInfo firstKey = new ConsoleKeyInfo('0', ConsoleKey.D0, false, true, false);
+            List<ConsoleKeyInfo> keyList = new List<ConsoleKeyInfo>();
+            keyList.Add(firstKey);
+
+            switch (key.Key)
+            {
+
+                case ConsoleKey.D1: keyList.Add(key);
+                    break;
+                case ConsoleKey.D2: keyList.Add(key);
+                    break;
+                case ConsoleKey.D3: keyList.Add(key);
+                    break;
+                case ConsoleKey.D4: keyList.Add(key);
+                    break;
+                case ConsoleKey.D5: keyList.Add(key);
+                    break;
+                case ConsoleKey.D6: keyList.Add(key);
+                    break;
+                default:
+                    break;
+            }
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                if (keyList.Last().KeyChar.ToString() == i.ToString())
+                {
+                    currentWeapon = weapons[i];
+                }
+            }
+            return currentWeapon;
 
         }
     }
