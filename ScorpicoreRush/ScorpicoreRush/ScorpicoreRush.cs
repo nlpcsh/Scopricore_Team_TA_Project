@@ -1,20 +1,13 @@
 ﻿namespace ScorpicoreRush
 {
-<<<<<<< HEAD
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Media;
-    using System.Text;
-    using System.Threading;
-=======
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
 using System.Text;
 using System.Threading;
->>>>>>> origin/master
+
 
     struct Position
     {
@@ -31,8 +24,7 @@ using System.Threading;
         static int gamefieldWidth = 70;
         static int windowWidth = 100;
         static int windowHeight = 30;
-<<<<<<< HEAD
-=======
+
         static int playerLives = 10;
         static int gameLevel = 1;
         static int points = 0;
@@ -42,7 +34,7 @@ using System.Threading;
         static int difficulty = 10;                                // % of each row covered with rocks
         static int rocksPerRow = gamefieldWidth * difficulty / 100;         // The max number of rocks per row. Integer division
         static char[,] rocks = new char[windowHeight, gamefieldWidth];    // The first element of each row keeps the number of rocks contained - for easier calculation of the score
->>>>>>> origin/master
+
 
 
         static void PrintOnPosition(int positionX, int positionY, string itemCharacter, ConsoleColor color)
@@ -106,14 +98,13 @@ using System.Threading;
             HeroPosition.Enqueue(HeroStartPosition);
 
             Queue<Position> bulletPosition = new Queue<Position>();
-<<<<<<< HEAD
+
 
 
 
             string hero = "<^>";
             string bullet = "o";
-=======
->>>>>>> origin/master
+
 
             Console.CursorVisible = false;
             for (int i = 20; i <= windowHeight; i++)
@@ -126,12 +117,7 @@ using System.Threading;
                 Console.BufferWidth = Console.WindowWidth = i;
                 //Thread.Sleep(20);
             }
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> origin/master
 
             DrawGameMenu();
             DrawDownBorder();
@@ -143,7 +129,7 @@ using System.Threading;
             Console.WriteLine(hero);
 
             //TODO: Implement movements --  Move Up and Down 
-           
+
             while (true)
             {
 
@@ -254,23 +240,17 @@ using System.Threading;
 
                     }
                 }
+            }
+        }
+     // Thread.Sleep(20);
 
-<<<<<<< HEAD
-                // Thread.Sleep(20);
 
-=======
            //   Thread.Sleep(200);
 
              //     GenerateNewRowRocks();
              //     MoveAllRowsDown();
              //     ClearAndRedraw();
->>>>>>> origin/master
 
-
-            }
-
-        }
-<<<<<<< HEAD
         public static char SelectWeapon()
         {
             char currentWeapon = '0';
@@ -307,7 +287,7 @@ using System.Threading;
             }
             return currentWeapon;
 
-=======
+        }
         static void GenerateNewRowRocks()
         {
             Console.SetCursorPosition(0, 0);
@@ -353,7 +333,7 @@ using System.Threading;
                    Console.Write(rocks[i, j]);
                }
            }
->>>>>>> origin/master
+
         }
     }
 }
