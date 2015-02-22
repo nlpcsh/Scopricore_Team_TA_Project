@@ -39,7 +39,7 @@
             if (choices[choice] == "Start")
             {
 
-                return;
+                ScorpicoreRush.Play();
             }
             if (choices[choice] == "Help")
             {

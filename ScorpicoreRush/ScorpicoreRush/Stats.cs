@@ -14,6 +14,7 @@ namespace ScorpicoreRush
         public static void ShowScore(int points, int level)
         {
             Console.WindowHeight = 30;
+            Console.BufferHeight = 100;
             Console.BufferWidth = Console.WindowWidth = 30;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(Console.WindowWidth/3, 1);
@@ -30,15 +31,16 @@ namespace ScorpicoreRush
             Console.SetCursorPosition(Console.WindowWidth / 4, 9);
             Console.ForegroundColor = ConsoleColor.White;
             ConsoleKeyInfo name = Console.ReadKey();
-           
+           string playerName = Console.ReadLine();
             Console.Write("{0}", name.KeyChar);
-            string playerName = Console.ReadLine();
+            
 
             WriteStatsToFile(playerName, points);
         }
 
         public static void PrintScores()
         {   Console.WindowHeight = 30;
+        Console.BufferHeight = 100;
             Console.BufferWidth = Console.WindowWidth = 30;
             Console.Clear();
             Console.WriteLine("   Press any key to start...");
@@ -80,7 +82,7 @@ namespace ScorpicoreRush
             using (streamWriter)
             {
                 streamWriter.WriteLine("*********************");
-                streamWriter.WriteLine("> {0,-13} - {1} <", playerName, playerPoints);
+                streamWriter.WriteLine("* {0,-12}->  {1} *", playerName, playerPoints);
                 streamWriter.WriteLine("*********************");
                
             } 

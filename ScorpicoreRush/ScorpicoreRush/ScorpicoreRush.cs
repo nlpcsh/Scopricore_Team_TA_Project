@@ -1,12 +1,12 @@
 ﻿namespace ScorpicoreRush
 {
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Media;
-using System.Text;
-using System.Threading;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Media;
+    using System.Text;
+    using System.Threading;
 
 
     struct Position
@@ -25,71 +25,27 @@ using System.Threading;
         static int windowWidth = 100;
         static int windowHeight = 30;
 
-        static int playerLives = 10;
-        static int gameLevel = 1;
-        static int points = 0;
 
-        static string hero = "<^>";
         static char[] rockSymbols = { '$', '&', '#', };            // shoot $ avoid & and #, # is indestructable...  
         static int difficulty = 10;                                // % of each row covered with rocks
-        static int rocksPerRow = gamefieldWidth * difficulty / 100;         // The max number of rocks per row. Integer division
-        static char[,] rocks = new char[windowHeight, gamefieldWidth];    // The first element of each row keeps the number of rocks contained - for easier calculation of the score
+        static int rocksPerRow = 10;         // The max number of rocks per row. Integer division
+        static char[,] rocks = new char[25, 25];    // The first element of each row keeps the number of rocks contained - for easier calculation of the score
 
 
 
-        static void PrintOnPosition(int positionX, int positionY, string itemCharacter, ConsoleColor color)
-        {
-            Console.ForegroundColor = color;
-            Console.SetCursorPosition(positionX, positionY);
-            Console.Write(itemCharacter);
-        }
-        static void PrintTextInGameMenu(int positionX, int positionY, string menuText, ConsoleColor color)
-        {
-            Console.ForegroundColor = color;
-            Console.SetCursorPosition(positionX, positionY);
-            Console.Write(menuText);
-
-        }
-        static void DrawGameMenu()
-        {
-            for (int i = 0; i < Console.WindowHeight - 9; i++)
-            {
-                PrintOnPosition(gamefieldWidth, i, "||", ConsoleColor.DarkGray);
-            }
-            PrintTextInGameMenu(gamefieldWidth + 2, 0, "----------------------------", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 4, 1, "*** SCORPICORE RUSH ***", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 2, 2, "----------------------------", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 11, 4, "Points: ", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: ", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: ", ConsoleColor.DarkGray);
-
-        }
-        public static void DrawDownBorder()
-        {
-            for (int i = 0; i < Console.WindowWidth; i++)
-            {
-                Console.SetCursorPosition(i, Console.WindowHeight - 9);
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine("-");
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-
-            }
-        }
-        public static void FireWeapon()
-        {
-            using (SoundPlayer fireWeapon = new SoundPlayer(@"..\..\FireWeapon.wav"))
-            {
-                fireWeapon.Play();
-                //Thread.Sleep(50);
-            }
-        }
+      
         static void Main()
+        {
+            Menu.ShowMenu();
+            Play();
+        }
+        public static void Play()
         {
             Console.Title = "Scorpiocore Rush!";
             int points = 0;
             int level = 0;
             char playerLives = '\u2665';
-            Menu.ShowMenu();
+            //Menu.ShowMenu();
             Console.Clear();
 
             Random rand = new Random();
@@ -104,7 +60,7 @@ using System.Threading;
 
             string hero = "<^>";
             string bullet = "o";
-
+            char currentWeapon = 'W';
 
             Console.CursorVisible = false;
             for (int i = 20; i <= windowHeight; i++)
@@ -138,6 +94,11 @@ using System.Threading;
                 PrintTextInGameMenu(gamefieldWidth + 18, 8, level.ToString(), ConsoleColor.Gray);
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.CursorVisible = false;
+
+                GenerateNewRowRocks();
+                MoveAllRowsDown();
+                ClearAndRedraw();
+
 
                 if (Console.KeyAvailable)
                 {
@@ -194,7 +155,7 @@ using System.Threading;
                         level = points / 10;
                         int y = HeroStartPosition.Y - 2;
                         int x = HeroStartPosition.X;
-                        char currentWeapon = SelectWeapon();
+
                         while (y >= 0)
                         {
                             Thread.Sleep(20);
@@ -216,21 +177,24 @@ using System.Threading;
                                     case 2: Console.Write("\\"); break;
                                     case 3: Console.Write("|"); break;
                                 }
+                                //    }
+                                Console.SetCursorPosition(0, 0);
+                                Console.Write(new string(' ', Console.WindowWidth - 32));
+                                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                y--;
+
                             }
-                            Console.SetCursorPosition(0, 0);
-                            Console.Write(new string(' ', Console.WindowWidth - 32));
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            y--;
 
                         }
+                        //currentWeapon = SelectWeapon();
+
+
+
+
+                        //TODO: When the game is finished logic
 
                     }
-
-
-
-
-                    //TODO: When the game is finished logic
-                    if (key.Key == ConsoleKey.Q)
+                    else if (key.Key == ConsoleKey.Q)
                     {
                         Console.Clear();
                         Console.SetCursorPosition(0, 0);
@@ -242,15 +206,60 @@ using System.Threading;
                 }
             }
         }
-     // Thread.Sleep(20);
+        // Thread.Sleep(20);
 
 
-           //   Thread.Sleep(200);
+        //   Thread.Sleep(200);
 
-             //     GenerateNewRowRocks();
-             //     MoveAllRowsDown();
-             //     ClearAndRedraw();
+        //     GenerateNewRowRocks();
+        //     MoveAllRowsDown();
+        //     ClearAndRedraw();
+  static void PrintOnPosition(int positionX, int positionY, string itemCharacter, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.SetCursorPosition(positionX, positionY);
+            Console.Write(itemCharacter);
+        }
+        static void PrintTextInGameMenu(int positionX, int positionY, string menuText, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.SetCursorPosition(positionX, positionY);
+            Console.Write(menuText);
 
+        }
+        static void DrawGameMenu()
+        {
+            for (int i = 0; i < Console.WindowHeight - 9; i++)
+            {
+                PrintOnPosition(gamefieldWidth, i, "||", ConsoleColor.DarkGray);
+            }
+            PrintTextInGameMenu(gamefieldWidth + 2, 0, "----------------------------", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 4, 1, "*** SCORPICORE RUSH ***", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 2, 2, "----------------------------", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 11, 4, "Points: ", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: ", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: ", ConsoleColor.DarkGray);
+
+        }
+        public static void DrawDownBorder()
+        {
+            for (int i = 0; i < Console.WindowWidth; i++)
+            {
+                Console.SetCursorPosition(i, Console.WindowHeight - 9);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("-");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+
+            }
+        }
+        public static void FireWeapon()
+        {
+            using (SoundPlayer fireWeapon = new SoundPlayer(@"..\..\FireWeapon.wav"))
+            {
+                fireWeapon.Play();
+                //Thread.Sleep(50);
+            }
+        }
         public static char SelectWeapon()
         {
             char currentWeapon = '0';
@@ -291,30 +300,30 @@ using System.Threading;
         static void GenerateNewRowRocks()
         {
             Console.SetCursorPosition(0, 0);
-            for (int j = 0; j <= gamefieldWidth - 1; j++)
+            for (int j = 0; j <= 20; j++)
             {
-                rocks[windowHeight - 10, j] = ' ';
-         
+                rocks[20, j] = ' ';
+
             }
-         
-           Random RockRandom = new Random();
-           int randomRocksPerRow = RockRandom.Next(0, rocksPerRow); // Random number of the rocks per row between 0 and rocksPerRow (rocksPerRow not included)
-         
-           rocks[windowHeight - 10, 0] = (char)randomRocksPerRow;
-         
-           for (int i = 0; i < randomRocksPerRow; i++)
-           {
-               int nextPosition = RockRandom.Next(1, gamefieldWidth - 1); // A random position between 1 and WIDTH (inclusive)
-               int nextRockType = RockRandom.Next(0, rockSymbols.Length); // A random type of rock
-               rocks[windowHeight - 10, nextPosition] = rockSymbols[nextRockType];
-           }
+
+            Random RockRandom = new Random();
+            int randomRocksPerRow = RockRandom.Next(0, rocksPerRow); // Random number of the rocks per row between 0 and rocksPerRow (rocksPerRow not included)
+
+            rocks[20, 0] = (char)randomRocksPerRow;
+
+            for (int i = 0; i < randomRocksPerRow; i++)
+            {
+                int nextPosition = RockRandom.Next(1, 20); // A random position between 1 and WIDTH (inclusive)
+                int nextRockType = RockRandom.Next(0, rockSymbols.Length); // A random type of rock
+                rocks[20, nextPosition] = rockSymbols[nextRockType];
+            }
         }
 
         static void MoveAllRowsDown()
         {
-            for (int i = 0; i < windowHeight - 10; i++)
+            for (int i = 0; i < 20; i++)
             {
-                for (int j = 0; j <= gamefieldWidth - 1; j++)
+                for (int j = 0; j <= 20; j++)
                 {
                     rocks[i, j] = rocks[i + 1, j];
                 }
@@ -322,17 +331,17 @@ using System.Threading;
         }
         static void ClearAndRedraw()
         {
-         //  Console.Clear();
-           DrawGameMenu();
-           DrawDownBorder();
-           Console.SetCursorPosition(0, 0);
-           for (int i = windowHeight - 10; i >= 0; i--)
-           {
-               for (int j = 1; j <= gamefieldWidth - 1; j++)
-               {
-                   Console.Write(rocks[i, j]);
-               }
-           }
+            //  Console.Clear();
+            DrawGameMenu();
+            DrawDownBorder();
+            Console.SetCursorPosition(0, 0);
+            for (int i = 20; i >= 0; i--)
+            {
+                for (int j = 1; j <= 20; j++)
+                {
+                    Console.Write(rocks[i, j]);
+                }
+            }
 
         }
     }
