@@ -19,15 +19,24 @@
             this.Y = y;
         }
     }
+    struct Object
+    {
+        public int x;
+        public int y;
+        public char c;
+        public ConsoleColor color;
+    }
 
     class ScorpicoreRush
     {
         static int gamefieldWidth = 70;
         static int windowWidth = 100;
         static int windowHeight = 30;
+        static int gameFieldHeight = 20;
 
 
         static char[] rockSymbols = { '$', '&', '#', };            // shoot $ avoid & and #, # is indestructable...  
+        static string hero = "<^>";
         static int difficulty = 10;                                // % of each row covered with rocks
         static int rocksPerRow = 10;         // The max number of rocks per row. Integer division
         static char[,] rocks = new char[25, gamefieldWidth];    // The first element of each row keeps the number of rocks contained - for easier calculation of the score
@@ -38,7 +47,7 @@
       
         static void Main()
         {
-            Menu.ShowMenu();
+            //Menu.ShowMenu();
             Play();
         }
         public static void Play()
@@ -54,9 +63,12 @@
             //Menu.ShowMenu();
             Console.Clear();
 
+            Object Hero = new Object();
+
             
             Queue<Position> HeroPosition = new Queue<Position>();
             Position HeroStartPosition = new Position(20, 20);
+            Hero.x = 20;
             HeroPosition.Enqueue(HeroStartPosition);
 
             Queue<Position> bulletPosition = new Queue<Position>();
@@ -64,7 +76,7 @@
 
 
 
-            string hero = "<^>";
+            
             string bullet = "o";
             char currentWeapon = 'W';
 
@@ -109,6 +121,7 @@
 
                         HeroPosition.Dequeue();
                         Position dwarfEnd = new Position(HeroStartPosition.X -= 1, HeroStartPosition.Y);
+                        Hero.x -= 1;
                         HeroPosition.Enqueue(dwarfEnd);
                         Console.SetCursorPosition(0, 20);
                         Console.Write(new string(' ', Console.WindowWidth - 30));
@@ -116,11 +129,12 @@
                         foreach (Position position in HeroPosition)
                         {
                             Console.SetCursorPosition(position.X - 1, position.Y);
-                            Console.WriteLine(hero);
+                            //Console.WriteLine(hero);
 
                             if (HeroStartPosition.X == 1)
                             {
                                 HeroStartPosition.X = HeroStartPosition.X + 1;
+                                Hero.x += 1;
                             }
                         }
                     }
@@ -129,6 +143,7 @@
                     {
                         HeroPosition.Dequeue();
                         Position dwarfEnd = new Position(HeroStartPosition.X += 1, HeroStartPosition.Y);
+                        Hero.x += 1;
                         HeroPosition.Enqueue(dwarfEnd);
                         Console.SetCursorPosition(0, 20);
                         Console.Write(new string(' ', Console.WindowWidth - 32));
@@ -136,11 +151,12 @@
                         foreach (Position position in HeroPosition)
                         {
                             Console.SetCursorPosition(position.X + 1, position.Y);
-                            Console.WriteLine(hero);
+                            //Console.WriteLine(hero);
 
                             if (HeroStartPosition.X == Console.BufferWidth - 34)
                             {
                                 HeroStartPosition.X = HeroStartPosition.X - 1;
+                                Hero.x -= 1;
                             }
 
                         }
@@ -212,7 +228,7 @@
                 DrawDownBorder();
                 GenerateNewRowRocks();
                 MoveAllRowsDown();
-                ClearAndRedraw();
+                ClearAndRedraw(Hero);
 
                 Thread.Sleep(100);
             }
@@ -340,7 +356,7 @@
 
         static void MoveAllRowsDown()
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < gameFieldHeight; i++)
             {
                 for (int j = 0; j < gamefieldWidth; j++)
                 {
@@ -348,13 +364,27 @@
                 }
             }
         }
-        static void ClearAndRedraw()
+        static void ClearAndRedraw(Object Hero)
         {
             //  Console.Clear();
             DrawGameMenu();
             DrawDownBorder();
             Console.SetCursorPosition(0, 0);
-            for (int i = 20; i >= 0; i--)
+
+            // Condition for removing one live of the Hero
+            for (int i = 0; i < gamefieldWidth; i++)
+			{
+                if (!(rocks[gameFieldHeight, i] == ' '))
+                {
+                    if ( Hero.x == i )
+                    {
+                        Console.WriteLine(" BAD !");  // TODO:  Implement game over !!!
+                    }
+                }
+			}
+
+
+            for (int i = gameFieldHeight; i >= 0; i--)
             {
                 for (int j = 1; j < gamefieldWidth; j++)
                 {
@@ -362,7 +392,9 @@
                 }
                 Console.WriteLine();
             }
-            //Console.Write(hero);
+
+            Console.SetCursorPosition(Hero.x, gameFieldHeight);
+            Console.Write(hero);
         }
     }
 }
