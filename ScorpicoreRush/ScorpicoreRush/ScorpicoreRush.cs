@@ -69,6 +69,7 @@
             Queue<Position> HeroPosition = new Queue<Position>();
             Position HeroStartPosition = new Position(20, 20);
             Hero.x = 20;
+            Hero.y = gameFieldHeight;
             HeroPosition.Enqueue(HeroStartPosition);
 
             Queue<Position> bulletPosition = new Queue<Position>();
@@ -162,7 +163,30 @@
                         }
 
                     }
+                    else if (key.Key == ConsoleKey.UpArrow)
+                    {
+                        Hero.y -= 1;
+                        Console.SetCursorPosition(0, 20);
+                        Console.Write(new string(' ', Console.WindowWidth - 32));
 
+                            if (Hero.y == Console.BufferWidth - 34)
+                            {
+                                Hero.y = Hero.y + 1;
+                            }
+
+                    }
+                    else if (key.Key == ConsoleKey.DownArrow)
+                    {
+                        Hero.y += 1;
+                        Console.SetCursorPosition(0, 20);
+                        Console.Write(new string(' ', Console.WindowWidth - 32));
+
+                        if (Hero.y == Console.BufferWidth - 34)
+                        {
+                            Hero.y = Hero.y - 1;
+                        }
+
+                    }
                     else if (key.Key == ConsoleKey.Spacebar)
                     {
                         // Separate bullet movement from rocks falling - if possible ???
@@ -348,9 +372,12 @@
 
             for (int i = 0; i < randomRocksPerRow; i++)
             {
-                int nextPosition = RockRandom.Next(1, gamefieldWidth); // A random position between 1 and WIDTH (inclusive)
-                int nextRockType = RockRandom.Next(0, rockSymbols.Length); // A random type of rock
-                rocks[20, nextPosition] = rockSymbols[nextRockType];
+                if (rand.Next(1,5) == 1) // one of 5 rows have rocks
+                {
+                    int nextPosition = RockRandom.Next(1, gamefieldWidth); // A random position between 1 and WIDTH (inclusive)
+                    int nextRockType = RockRandom.Next(0, rockSymbols.Length); // A random type of rock
+                    rocks[20, nextPosition] = rockSymbols[nextRockType];
+                }
             }
         }
 
@@ -374,17 +401,21 @@
             // Condition for removing one live of the Hero
             for (int i = 0; i < gamefieldWidth; i++)
 			{
-                if (!(rocks[gameFieldHeight, i] == ' '))
+                if (!(rocks[gameFieldHeight-1, i] == ' '))
                 {
-                    if ( Hero.x == i )
+                    for (int j = 0; j < gameFieldHeight; j++)
                     {
-                        Console.WriteLine(" BAD !");  // TODO:  Implement game over !!!
+                        if (((Hero.x == i) || (Hero.x == i + 1) || (Hero.x == i + 2)) && (Hero.y == j))
+                        {
+                            Console.WriteLine(" BAD !");  // TODO:  Implement game over !!!
+                            Thread.Sleep(1000);
+                        }
                     }
                 }
 			}
 
 
-            for (int i = gameFieldHeight; i >= 0; i--)
+            for (int i = gameFieldHeight-1; i >= 0; i--)
             {
                 for (int j = 1; j < gamefieldWidth; j++)
                 {
@@ -393,7 +424,7 @@
                 Console.WriteLine();
             }
 
-            Console.SetCursorPosition(Hero.x, gameFieldHeight);
+            Console.SetCursorPosition(Hero.x, Hero.y);
             Console.Write(hero);
         }
     }
