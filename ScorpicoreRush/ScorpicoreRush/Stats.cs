@@ -31,7 +31,7 @@ namespace ScorpicoreRush
             Console.SetCursorPosition(Console.WindowWidth / 4, 9);
             Console.ForegroundColor = ConsoleColor.White;
             ConsoleKeyInfo name = Console.ReadKey();
-           string playerName = Console.ReadLine();
+            string playerName = Console.ReadLine();
             Console.Write("{0}", name.KeyChar);
             
 
@@ -40,7 +40,7 @@ namespace ScorpicoreRush
 
         public static void PrintScores()
         {   Console.WindowHeight = 30;
-        Console.BufferHeight = 100;
+            Console.BufferHeight = 100;
             Console.BufferWidth = Console.WindowWidth = 30;
             Console.Clear();
             Console.WriteLine("   Press any key to start...");

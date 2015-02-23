@@ -7,6 +7,7 @@
     using System.Media;
     using System.Text;
     using System.Threading;
+    using System.Threading.Tasks;
 
 
     struct Position
@@ -29,10 +30,11 @@
         static char[] rockSymbols = { '$', '&', '#', };            // shoot $ avoid & and #, # is indestructable...  
         static int difficulty = 10;                                // % of each row covered with rocks
         static int rocksPerRow = 10;         // The max number of rocks per row. Integer division
-        static char[,] rocks = new char[25, 25];    // The first element of each row keeps the number of rocks contained - for easier calculation of the score
+        static char[,] rocks = new char[25, gamefieldWidth];    // The first element of each row keeps the number of rocks contained - for easier calculation of the score
 
-
-
+        // To ensure the randomness :) 
+        static Random rand = new Random();
+        static Random RockRandom = new Random();
       
         static void Main()
         {
@@ -42,13 +44,17 @@
         public static void Play()
         {
             Console.Title = "Scorpiocore Rush!";
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.CursorVisible = false;
+            Console.BufferHeight = Console.WindowHeight = windowHeight;
+            Console.BufferWidth = Console.WindowWidth = windowWidth;
             int points = 0;
             int level = 0;
             char playerLives = '\u2665';
             //Menu.ShowMenu();
             Console.Clear();
 
-            Random rand = new Random();
+            
             Queue<Position> HeroPosition = new Queue<Position>();
             Position HeroStartPosition = new Position(20, 20);
             HeroPosition.Enqueue(HeroStartPosition);
@@ -62,17 +68,17 @@
             string bullet = "o";
             char currentWeapon = 'W';
 
-            Console.CursorVisible = false;
-            for (int i = 20; i <= windowHeight; i++)
-            {
-                Console.BufferHeight = Console.WindowHeight = i;
-                //Thread.Sleep(20);
-            }
-            for (int i = 20; i <= windowWidth; i++)
-            {
-                Console.BufferWidth = Console.WindowWidth = i;
-                //Thread.Sleep(20);
-            }
+            
+            //for (int i = 20; i <= windowHeight; i++)
+            //{
+            //    Console.BufferHeight = Console.WindowHeight = i;
+            //    //Thread.Sleep(20);
+            //}
+            //for (int i = 20; i <= windowWidth; i++)
+            //{
+            //    Console.BufferWidth = Console.WindowWidth = i;
+            //    //Thread.Sleep(20);
+            //}
 
 
             DrawGameMenu();
@@ -89,15 +95,7 @@
             while (true)
             {
 
-                PrintTextInGameMenu(gamefieldWidth + 18, 4, points.ToString(), ConsoleColor.Gray);
-                PrintTextInGameMenu(gamefieldWidth + 18, 6, new string(playerLives, 3), ConsoleColor.Red);  //TODO: Print this according to the logic for loosing lives 
-                PrintTextInGameMenu(gamefieldWidth + 18, 8, level.ToString(), ConsoleColor.Gray);
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.CursorVisible = false;
-
-                GenerateNewRowRocks();
-                MoveAllRowsDown();
-                ClearAndRedraw();
+                PrintMenu(points, playerLives, level);
 
 
                 if (Console.KeyAvailable)
@@ -114,6 +112,7 @@
                         HeroPosition.Enqueue(dwarfEnd);
                         Console.SetCursorPosition(0, 20);
                         Console.Write(new string(' ', Console.WindowWidth - 30));
+
                         foreach (Position position in HeroPosition)
                         {
                             Console.SetCursorPosition(position.X - 1, position.Y);
@@ -150,42 +149,46 @@
 
                     else if (key.Key == ConsoleKey.Spacebar)
                     {
-                        FireWeapon();
-                        points++;
-                        level = points / 10;
-                        int y = HeroStartPosition.Y - 2;
-                        int x = HeroStartPosition.X;
+                        // Separate bullet movement from rocks falling - if possible ???
+                        //Task.Run(() =>
+                        //{
+                            FireWeapon();
+                            points++;
+                            level = points / 10;
+                            int y = HeroStartPosition.Y - 2;
+                            int x = HeroStartPosition.X;
 
-                        while (y >= 0)
-                        {
-                            Thread.Sleep(20);
-                            Console.SetCursorPosition(x, y + 1);
-                            Console.WriteLine("  ");
-                            Console.SetCursorPosition(x, y);
-                            Console.ForegroundColor = ConsoleColor.Cyan;
-                            if (currentWeapon == '^' || currentWeapon == '@' || currentWeapon == '*' || currentWeapon == 'o' || currentWeapon == '!' || currentWeapon == '$')
-                            {
-                                Console.WriteLine(currentWeapon);
-                            }
 
-                            else
+                            while (y >= 0)
                             {
-                                switch (y % 2)
+                                Thread.Sleep(20);
+                                Console.SetCursorPosition(x, y + 1);
+                                Console.WriteLine("  ");
+                                Console.SetCursorPosition(x, y);
+                                Console.ForegroundColor = ConsoleColor.Cyan;
+                                if (currentWeapon == '^' || currentWeapon == '@' || currentWeapon == '*' || currentWeapon == 'o' || currentWeapon == '!' || currentWeapon == '$')
                                 {
-                                    case 0: Console.Write("/"); break;
-                                    case 1: Console.Write("-"); break;
-                                    case 2: Console.Write("\\"); break;
-                                    case 3: Console.Write("|"); break;
+                                    Console.WriteLine(currentWeapon);
                                 }
-                                //    }
-                                Console.SetCursorPosition(0, 0);
-                                Console.Write(new string(' ', Console.WindowWidth - 32));
-                                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                                y--;
 
+                                else
+                                {
+                                    switch (y % 2)
+                                    {
+                                        case 0: Console.Write("/"); break;
+                                        case 1: Console.Write("-"); break;
+                                        case 2: Console.Write("\\"); break;
+                                        case 3: Console.Write("|"); break;
+                                    }
+                                    //    }
+                                    Console.SetCursorPosition(0, 0);
+                                    Console.Write(new string(' ', Console.WindowWidth - 32));
+                                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                    y--;
+
+                                }
                             }
-
-                        }
+                        //});
                         //currentWeapon = SelectWeapon();
 
 
@@ -204,17 +207,25 @@
 
                     }
                 }
+
+                DrawGameMenu();
+                DrawDownBorder();
+                GenerateNewRowRocks();
+                MoveAllRowsDown();
+                ClearAndRedraw();
+
+                Thread.Sleep(100);
             }
         }
         // Thread.Sleep(20);
 
 
-        //   Thread.Sleep(200);
+           //Thread.Sleep(200);
 
         //     GenerateNewRowRocks();
         //     MoveAllRowsDown();
         //     ClearAndRedraw();
-  static void PrintOnPosition(int positionX, int positionY, string itemCharacter, ConsoleColor color)
+        static void PrintOnPosition(int positionX, int positionY, string itemCharacter, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.SetCursorPosition(positionX, positionY);
@@ -226,6 +237,13 @@
             Console.SetCursorPosition(positionX, positionY);
             Console.Write(menuText);
 
+        }
+ 
+        static void PrintMenu(int points, char playerLives, int level)
+        {
+            PrintTextInGameMenu(gamefieldWidth + 18, 4, points.ToString(), ConsoleColor.Gray);
+            PrintTextInGameMenu(gamefieldWidth + 18, 6, new string(playerLives, 3), ConsoleColor.Red);  //TODO: Print this according to the logic for loosing lives 
+            PrintTextInGameMenu(gamefieldWidth + 18, 8, level.ToString(), ConsoleColor.Gray);
         }
         static void DrawGameMenu()
         {
@@ -243,14 +261,15 @@
         }
         public static void DrawDownBorder()
         {
-            for (int i = 0; i < Console.WindowWidth; i++)
-            {
-                Console.SetCursorPosition(i, Console.WindowHeight - 9);
+            //for (int i = 0; i < Console.WindowWidth; i++)
+            //{
+                //Console.SetCursorPosition(i, Console.WindowHeight - 9);
+                Console.SetCursorPosition(0, Console.WindowHeight - 9);
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine("-");
+                Console.Write(new String('-', Console.WindowWidth));
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
 
-            }
+            //}
         }
         public static void FireWeapon()
         {
@@ -300,20 +319,20 @@
         static void GenerateNewRowRocks()
         {
             Console.SetCursorPosition(0, 0);
-            for (int j = 0; j <= 20; j++)
+            for (int j = 0; j < gamefieldWidth; j++)
             {
                 rocks[20, j] = ' ';
 
             }
 
-            Random RockRandom = new Random();
+            
             int randomRocksPerRow = RockRandom.Next(0, rocksPerRow); // Random number of the rocks per row between 0 and rocksPerRow (rocksPerRow not included)
 
             rocks[20, 0] = (char)randomRocksPerRow;
 
             for (int i = 0; i < randomRocksPerRow; i++)
             {
-                int nextPosition = RockRandom.Next(1, 20); // A random position between 1 and WIDTH (inclusive)
+                int nextPosition = RockRandom.Next(1, gamefieldWidth); // A random position between 1 and WIDTH (inclusive)
                 int nextRockType = RockRandom.Next(0, rockSymbols.Length); // A random type of rock
                 rocks[20, nextPosition] = rockSymbols[nextRockType];
             }
@@ -323,7 +342,7 @@
         {
             for (int i = 0; i < 20; i++)
             {
-                for (int j = 0; j <= 20; j++)
+                for (int j = 0; j < gamefieldWidth; j++)
                 {
                     rocks[i, j] = rocks[i + 1, j];
                 }
@@ -337,12 +356,13 @@
             Console.SetCursorPosition(0, 0);
             for (int i = 20; i >= 0; i--)
             {
-                for (int j = 1; j <= 20; j++)
+                for (int j = 1; j < gamefieldWidth; j++)
                 {
                     Console.Write(rocks[i, j]);
                 }
+                Console.WriteLine();
             }
-
+            //Console.Write(hero);
         }
     }
 }
