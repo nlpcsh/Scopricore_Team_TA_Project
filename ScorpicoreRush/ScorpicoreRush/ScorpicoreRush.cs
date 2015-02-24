@@ -67,8 +67,8 @@
 
             
             Queue<Position> HeroPosition = new Queue<Position>();
-            Position HeroStartPosition = new Position(20, 20);
-            Hero.x = 20;
+            Position HeroStartPosition = new Position(gamefieldWidth / 2, gameFieldHeight);
+            Hero.x = gamefieldWidth / 2;
             Hero.y = gameFieldHeight;
             HeroPosition.Enqueue(HeroStartPosition);
 
@@ -361,14 +361,14 @@
             Console.SetCursorPosition(0, 0);
             for (int j = 0; j < gamefieldWidth; j++)
             {
-                rocks[20, j] = ' ';
+                rocks[gameFieldHeight, j] = ' ';
 
             }
 
             
             int randomRocksPerRow = RockRandom.Next(0, rocksPerRow); // Random number of the rocks per row between 0 and rocksPerRow (rocksPerRow not included)
 
-            rocks[20, 0] = (char)randomRocksPerRow;
+            rocks[gameFieldHeight, 0] = (char)randomRocksPerRow;
 
             for (int i = 0; i < randomRocksPerRow; i++)
             {
@@ -376,7 +376,7 @@
                 {
                     int nextPosition = RockRandom.Next(1, gamefieldWidth); // A random position between 1 and WIDTH (inclusive)
                     int nextRockType = RockRandom.Next(0, rockSymbols.Length); // A random type of rock
-                    rocks[20, nextPosition] = rockSymbols[nextRockType];
+                    rocks[gameFieldHeight, nextPosition] = rockSymbols[nextRockType];
                 }
             }
         }
@@ -398,22 +398,11 @@
             DrawDownBorder();
             Console.SetCursorPosition(0, 0);
 
-            // Condition for removing one live of the Hero
-            for (int i = 0; i < gamefieldWidth; i++)
-			{
-                if (!(rocks[gameFieldHeight-1, i] == ' '))
-                {
-                    for (int j = 0; j < gameFieldHeight; j++)
-                    {
-                        if (((Hero.x == i) || (Hero.x == i + 1) || (Hero.x == i + 2)) && (Hero.y == j))
-                        {
-                            Console.WriteLine(" BAD !");  // TODO:  Implement game over !!!
-                            Thread.Sleep(1000);
-                        }
-                    }
-                }
-			}
-
+            if ((rocks[Hero.y, Hero.x] != ' ') || (rocks[Hero.y, Hero.x + 1] != ' ') || (rocks[Hero.y, Hero.x + 2] != ' '))
+            {
+                Console.WriteLine(" I'M HIT !");  // TODO:  Implement game over !!!
+                //Thread.Sleep(1000);
+            }
 
             for (int i = gameFieldHeight-1; i >= 0; i--)
             {
@@ -426,6 +415,9 @@
 
             Console.SetCursorPosition(Hero.x, Hero.y);
             Console.Write(hero);
+            // Condition for removing one live of the Hero
+
+
         }
     }
 }
