@@ -15,6 +15,8 @@
         public int y;
         public string face;
         public int lives;
+        public int points;
+        public int level;
         public ConsoleColor color;
     }
 
@@ -29,12 +31,12 @@
 
 
         static char[] rockSymbols = { '$', '&', '#', };            // shoot $ avoid & and #, # is indestructable...  
-        static string hero = "<^>";
         static int difficulty = 10;                                // % of each row covered with rocks
         static int timeToSleep = 200;   
         static int rocksPerRow = 10;         // The max number of rocks per row. Integer division
         static char[,] rocks = new char[gameFieldHeight + 1, gamefieldWidth];    // The first row keeps new rocks positions
-
+ 
+        static char playerLives = '\u2665';
         // To ensure the randomness :) 
         static Random rand = new Random();
         static Random RockRandom = new Random();
@@ -54,9 +56,7 @@
             Console.CursorVisible = false;
             Console.BufferHeight = Console.WindowHeight = windowHeight;
             Console.BufferWidth = Console.WindowWidth = windowWidth;
-            int points = 0;
-            int level = 0;
-            char playerLives = '\u2665';
+
             //Menu.ShowMenu();
             Console.Clear();
 
@@ -64,23 +64,14 @@
             Hero.y = gameFieldHeight;
             Hero.face = "<^>";
             Hero.lives = 3;
+            Hero.level = 1;
+            Hero.points = 0;
 
             string bullet = "o";
             string currentWeapon = "W";
 
-            DrawGameMenu();
-            DrawDownBorder();
-
-            Console.ForegroundColor = ConsoleColor.DarkYellow;      //<---------Eventually change color with levels
-
             // initial rock matrix initialization
-            for (int row = 0; row < gameFieldHeight; row++)
-            {
-                for (int col = 0; col < gamefieldWidth; col++)
-                {
-                    rocks[row, col] = ' ';
-                }
-            }
+            InitialRocksInitialization();
 
             while (true)
             {
@@ -99,7 +90,7 @@
                         //{
                         FireWeapon();
                         
-                        level = points / 10;
+                        Hero.level = Hero.points / 10 + 1 ;
                         int y = Hero.y - 1;
                         int x = Hero.x + 1;
 
@@ -114,18 +105,26 @@
                             }
 
                             Console.Clear();
-                            PrintMenu(points, playerLives, level);
+                            PrintMenu(Hero.points, playerLives, Hero.level);
                             DrawGameMenu();
                             DrawDownBorder();
                             GenerateNewRowRocks();
                             MoveAllRowsDown();
                             ClearAndRedraw();
 
-                            Console.SetCursorPosition(x, y + 1);
+                            // Hero hit a rock !
+                            DoesHeroHitARock();
+
+                            // bullet hit a rock !  // TODO - need to be improved
+                            if (rocks[y, x] != ' ')
+                            {
+                                rocks[y, x] = ' ';
+                                Hero.points++;
+                                break;
+                            }
 
                             Console.SetCursorPosition(x, y);
                             Console.ForegroundColor = ConsoleColor.Cyan;
-
 
                             if (currentWeapon.Equals("^") || currentWeapon.Equals("@") || currentWeapon.Equals("*") || currentWeapon.Equals("o") || currentWeapon.Equals("!") || currentWeapon.Equals("$"))
                             {
@@ -143,19 +142,7 @@
                                     case 3: Console.Write("|"); break;
                                 }
 
-                                Console.SetCursorPosition(0, 0);
-                                Console.Write(new string(' ', gamefieldWidth - 2));
-                                Console.ForegroundColor = ConsoleColor.DarkYellow;
-
                                 y--;
-                            }
-
-                            // hit a rock !
-                            if ((y > 0) && (rocks[y, x] != ' '))
-                            {
-                                rocks[y, x] = ' ';
-                                points++;
-                                break;
                             }
 
                             Thread.Sleep(timeToSleep);
@@ -163,37 +150,81 @@
                         //});
                         //currentWeapon = SelectWeapon();
 
-
-
-
-                        //TODO: When the game is finished logic
-
                     }
                     else if (key.Key == ConsoleKey.Q)
                     {
-                        Console.Clear();
-                        Console.SetCursorPosition(0, 0);
-                        Stats.ShowScore(points, level);
-                        Console.ResetColor();
-                        Menu.ShowMenu();
-
+                        QuitOrEndGame();
                     }
                 }
 
                 Console.Clear();
-                PrintMenu(points, playerLives, level);
+                PrintMenu(Hero.points, playerLives, Hero.level);
                 DrawGameMenu();
                 DrawDownBorder();
                 GenerateNewRowRocks();
                 MoveAllRowsDown();
                 ClearAndRedraw();
 
+                // Hero hit a rock !
+                DoesHeroHitARock();
+                
                 Thread.Sleep(timeToSleep);
             }
         }
 
+        public static void DoesHeroHitARock()
+        {
+            if ((rocks[Hero.y, Hero.x] != ' ') || (rocks[Hero.y, Hero.x + 1] != ' ') || (rocks[Hero.y, Hero.x + 2] != ' '))
+            {
 
-        static void ChangeHeroPosition(ConsoleKeyInfo key)
+                Hero.lives -= 1;
+
+                if (Hero.lives == 0)
+                {
+                    QuitOrEndGame();
+                }
+                else
+                {
+                    RestartGame();
+                }
+            }
+        }
+
+        public static void QuitOrEndGame()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(0, 0);
+            Stats.ShowScore(Hero.points, Hero.level);
+            Console.ResetColor();
+            Menu.ShowMenu();
+        }
+
+        public static void InitialRocksInitialization()
+        {
+            // initial rock matrix initialization
+            for (int row = 0; row < gameFieldHeight; row++)
+            {
+                for (int col = 0; col < gamefieldWidth; col++)
+                {
+                    rocks[row, col] = ' ';
+                }
+            }
+        }
+
+        public static void RestartGame()
+        {
+            Console.Clear();
+            PrintMenu(Hero.points, playerLives, Hero.level);
+            DrawGameMenu();
+            DrawDownBorder();
+
+            InitialRocksInitialization();
+
+            Hero.x = gamefieldWidth / 2;
+            Hero.y = gameFieldHeight; 
+        }
+
+        public static void ChangeHeroPosition(ConsoleKeyInfo key)
         {
             if (key.Key == ConsoleKey.LeftArrow)
             {
@@ -225,14 +256,14 @@
             }
         }
 
-        static void PrintOnPosition(int positionX, int positionY, string itemCharacter, ConsoleColor color)
+        public static void PrintOnPosition(int positionX, int positionY, string itemCharacter, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.SetCursorPosition(positionX, positionY);
             Console.Write(itemCharacter);
         }
 
-        static void PrintTextInGameMenu(int positionX, int positionY, string menuText, ConsoleColor color)
+        public static void PrintTextInGameMenu(int positionX, int positionY, string menuText, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.SetCursorPosition(positionX, positionY);
@@ -240,22 +271,22 @@
 
         }
 
-        static void PrintMenu(int points, char playerLives, int level)
+        public static void PrintMenu(int points, char playerLives, int level)
         {
             PrintTextInGameMenu(gamefieldWidth + 22, 4, points.ToString(), ConsoleColor.Gray);
             PrintTextInGameMenu(gamefieldWidth + 20, 6, new string(playerLives, Hero.lives), ConsoleColor.Red);  //TODO: Print this according to the logic for loosing lives 
             PrintTextInGameMenu(gamefieldWidth + 22, 8, level.ToString(), ConsoleColor.Gray);
         }
 
-        static void DrawGameMenu()
+        public static void DrawGameMenu()
         {
             for (int i = 0; i < gameFieldHeight + 1; i++)
             {
                 PrintOnPosition(gamefieldWidth + 2, i, "||", ConsoleColor.DarkGray);
             }
-            PrintTextInGameMenu(gamefieldWidth + 4, 0, "----------------------------", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 4, 0, "--------------------------", ConsoleColor.DarkGray);
             PrintTextInGameMenu(gamefieldWidth + 6, 1, "*** SCORPICORE RUSH ***", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 4, 2, "----------------------------", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gamefieldWidth + 4, 2, "--------------------------", ConsoleColor.DarkGray);
             PrintTextInGameMenu(gamefieldWidth + 11, 4, "Points: ", ConsoleColor.DarkGray);
             PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: ", ConsoleColor.DarkGray);
             PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: ", ConsoleColor.DarkGray);
@@ -317,7 +348,7 @@
 
         }
 
-        static void GenerateNewRowRocks()
+        public static void GenerateNewRowRocks()
         {
             for (int j = 0; j < gamefieldWidth; j++)  // First row contains new elements and it is not displayed
             {
@@ -337,7 +368,7 @@
             }
         }
 
-        static void MoveAllRowsDown()
+        public static void MoveAllRowsDown()
         {
             for (int i = gameFieldHeight; i > 0; i--)
             {
@@ -348,7 +379,7 @@
             }
         }
 
-        static void ClearAndRedraw()
+        public static void ClearAndRedraw()
         {
 
             ConsoleColor color = ConsoleColor.White;
