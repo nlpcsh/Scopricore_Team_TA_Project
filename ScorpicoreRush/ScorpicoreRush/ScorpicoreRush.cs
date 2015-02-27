@@ -41,11 +41,13 @@
         static Random rand = new Random();
         static Random RockRandom = new Random();
 
+        static bool isPlaying = true;
+
         static Object Hero = new Object();
 
         static void Main()
         {
-            //Menu.ShowMenu();
+            Menu.ShowMenu();
             Play();
         }
 
@@ -94,7 +96,9 @@
                         int y = Hero.y - 1;
                         int x = Hero.x + 1;
 
-                        while (y > 0)
+                        isPlaying = true;
+
+                        while ((y > 0) && isPlaying)
                         {
                             if (Console.KeyAvailable)
                             {
@@ -118,6 +122,10 @@
                             // bullet hit a rock !  // TODO - need to be improved
                             if ((rocks[y, x] != ' ') || (rocks[y + 1, x] != ' '))
                             {
+                                using (SoundPlayer bulletHitARockSound = new SoundPlayer(@"..\..\Pop_And_Explosion.wav"))
+                                {
+                                    bulletHitARockSound.Play();
+                                }
                                 rocks[y, x] = ' ';
                                 rocks[y + 1, x] = ' '; // if the bullet jump over the rock ( from y-=2 )
                                 rocks[y - 1, x] = ' ';
@@ -213,6 +221,11 @@
 
         public static void RestartGame()
         {
+            using (SoundPlayer restartLevel = new SoundPlayer(@"..\..\reload.wav"))
+            {
+                restartLevel.Play();
+            }
+            isPlaying = false; // ensure breaking the bullets while cycle
             Console.Clear();
             PrintMenu(Hero.points, playerLives, Hero.level);
             DrawGameMenu();
@@ -221,7 +234,7 @@
             InitialRocksInitialization();
 
             Hero.x = gamefieldWidth / 2;
-            Hero.y = gameFieldHeight; 
+            Hero.y = gameFieldHeight;
         }
 
         public static void HeroMovementAndGameControls(ConsoleKeyInfo key)
