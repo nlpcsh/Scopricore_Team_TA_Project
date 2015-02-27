@@ -45,7 +45,7 @@
 
         static void Main()
         {
-            Menu.ShowMenu();
+            //Menu.ShowMenu();
             Play();
         }
 
@@ -94,7 +94,7 @@
                         int y = Hero.y - 1;
                         int x = Hero.x + 1;
 
-                        while (y >= 0)
+                        while (y > 0)
                         {
                             if (Console.KeyAvailable)
                             {
@@ -116,9 +116,11 @@
                             DoesHeroHitARock();
 
                             // bullet hit a rock !  // TODO - need to be improved
-                            if (rocks[y, x] != ' ')
+                            if ((rocks[y, x] != ' ') || (rocks[y + 1, x] != ' '))
                             {
                                 rocks[y, x] = ' ';
+                                rocks[y + 1, x] = ' '; // if the bullet jump over the rock ( from y-=2 )
+                                rocks[y - 1, x] = ' ';
                                 Hero.points++;
                                 break;
                             }
@@ -134,7 +136,7 @@
 
                             else
                             {
-                                switch (y % 2)
+                                switch (y % 3)
                                 {
                                     case 0: Console.Write("/"); break;
                                     case 1: Console.Write("-"); break;
@@ -142,7 +144,8 @@
                                     case 3: Console.Write("|"); break;
                                 }
 
-                                y--;
+                                //y--;
+                                y -= 2; // faster movement of the bullet
                             }
 
                             Thread.Sleep(timeToSleep);
