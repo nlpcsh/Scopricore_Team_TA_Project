@@ -81,7 +81,7 @@
                     ConsoleKeyInfo key = Console.ReadKey(true);
                     while (Console.KeyAvailable) Console.ReadKey(true); // clears the ReadKey buffer
 
-                    ChangeHeroPosition(key);
+                    HeroMovementAndGameControls(key);
 
                     if (key.Key == ConsoleKey.Spacebar)
                     {
@@ -101,7 +101,7 @@
                                 ConsoleKeyInfo key2 = Console.ReadKey(true);
                                 while (Console.KeyAvailable) Console.ReadKey(true); // clears the ReadKey buffer
 
-                                ChangeHeroPosition(key2);
+                                HeroMovementAndGameControls(key2);
                             }
 
                             Console.Clear();
@@ -151,10 +151,7 @@
                         //currentWeapon = SelectWeapon();
 
                     }
-                    else if (key.Key == ConsoleKey.Q)
-                    {
-                        QuitOrEndGame();
-                    }
+                    
                 }
 
                 Console.Clear();
@@ -224,7 +221,7 @@
             Hero.y = gameFieldHeight; 
         }
 
-        public static void ChangeHeroPosition(ConsoleKeyInfo key)
+        public static void HeroMovementAndGameControls(ConsoleKeyInfo key)
         {
             if (key.Key == ConsoleKey.LeftArrow)
             {
@@ -253,6 +250,10 @@
                 {
                     Hero.y += 1;
                 }
+            }
+            else if (key.Key == ConsoleKey.Q)
+            {
+                QuitOrEndGame();
             }
         }
 
