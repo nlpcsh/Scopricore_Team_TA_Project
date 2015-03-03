@@ -8,7 +8,7 @@
     using System.Threading;
     //   using System.Threading.Tasks;
 
-    struct Object
+    struct Scorpicore
     {
         public int x;
         public int y;
@@ -24,14 +24,14 @@
         static int windowWidth = 100;
         static int windowHeight = 30;
 
-        static int gamefieldWidth = 70;
+        static int gameFieldWidth = 70;
         static int gameFieldHeight = 20;
 
         static char[] rockSymbols = { '$', '&', '#', }; // shoot $ avoid & and #, # is indestructable...  
         static int difficulty = 10;                     // % of each row covered with rocks
         static int timeToSleep = 200;   
         static int maxRocksPerRow = 10;         // The max number of rocks per row. Integer division
-        static char[,] rocks = new char[gameFieldHeight + 1, gamefieldWidth];    // The first row keeps new rocks positions 
+        static char[,] rocks = new char[gameFieldHeight + 1, gameFieldWidth];    // The first row keeps new rocks positions 
         static char playerLifeSymbol = '\u2665'; // A heart
 
         // To ensure the randomness :) 
@@ -40,7 +40,7 @@
 
         static bool isPlaying = true;
 
-        static Object Hero = new Object();
+        static Scorpicore Hero = new Scorpicore();
 
         public static void Play()
         {
@@ -53,7 +53,7 @@
             //Menu.ShowMenu();
             Console.Clear();
 
-            Hero.x = gamefieldWidth / 2;
+            Hero.x = gameFieldWidth / 2;
             Hero.y = gameFieldHeight;
             Hero.face = "<^>";
             Hero.lives = 3;
@@ -203,7 +203,7 @@
             // initial rock matrix initialization
             for (int row = 0; row < gameFieldHeight; row++)
             {
-                for (int col = 0; col < gamefieldWidth; col++)
+                for (int col = 0; col < gameFieldWidth; col++)
                 {
                     rocks[row, col] = ' ';
                 }
@@ -224,7 +224,7 @@
 
             InitialRocksInitialization();
 
-            Hero.x = gamefieldWidth / 2;
+            Hero.x = gameFieldWidth / 2;
             Hero.y = gameFieldHeight;
         }
 
@@ -239,7 +239,7 @@
             }
             else if (key.Key == ConsoleKey.RightArrow)
             {
-                if (Hero.x + 1 < gamefieldWidth)
+                if (Hero.x + 1 < gameFieldWidth)
                 {
                     Hero.x += 1;
                 }
@@ -281,23 +281,23 @@
 
         public static void PrintMenu(int points, char playerLives, int level)
         {
-            PrintTextInGameMenu(gamefieldWidth + 22, 4, points.ToString(), ConsoleColor.Gray);
-            PrintTextInGameMenu(gamefieldWidth + 20, 6, new string(playerLives, Hero.lives), ConsoleColor.Red);  //TODO: Print this according to the logic for loosing lives 
-            PrintTextInGameMenu(gamefieldWidth + 22, 8, level.ToString(), ConsoleColor.Gray);
+            PrintTextInGameMenu(gameFieldWidth + 22, 4, points.ToString(), ConsoleColor.Gray);
+            PrintTextInGameMenu(gameFieldWidth + 20, 6, new string(playerLives, Hero.lives), ConsoleColor.Red);  //TODO: Print this according to the logic for loosing lives 
+            PrintTextInGameMenu(gameFieldWidth + 22, 8, level.ToString(), ConsoleColor.Gray);
         }
 
         public static void DrawGameMenu()
         {
             for (int i = 0; i < gameFieldHeight + 1; i++)
             {
-                PrintOnPosition(gamefieldWidth + 2, i, "||", ConsoleColor.DarkGray);
+                PrintOnPosition(gameFieldWidth + 2, i, "||", ConsoleColor.DarkGray);
             }
-            PrintTextInGameMenu(gamefieldWidth + 4, 0, "--------------------------", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 6, 1, "*** SCORPICORE RUSH ***", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 4, 2, "--------------------------", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 11, 4, "Points: ", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 11, 6, "Lives: ", ConsoleColor.DarkGray);
-            PrintTextInGameMenu(gamefieldWidth + 11, 8, "Level: ", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gameFieldWidth + 4, 0, "--------------------------", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gameFieldWidth + 6, 1, "*** SCORPICORE RUSH ***", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gameFieldWidth + 4, 2, "--------------------------", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gameFieldWidth + 11, 4, "Points: ", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gameFieldWidth + 11, 6, "Lives: ", ConsoleColor.DarkGray);
+            PrintTextInGameMenu(gameFieldWidth + 11, 8, "Level: ", ConsoleColor.DarkGray);
 
         }
 
@@ -358,7 +358,7 @@
 
         public static void GenerateNewRowRocks()
         {
-            for (int j = 0; j < gamefieldWidth; j++)  // First row contains new elements and it is not displayed
+            for (int j = 0; j < gameFieldWidth; j++)  // First row contains new elements and it is not displayed
             {
                 rocks[0, j] = ' ';
             }
@@ -369,7 +369,7 @@
             {
                 if (Rand.Next(1, 5) == 1) // one of 5 rows have rocks
                 {
-                    int nextPosition = RockRandom.Next(1, gamefieldWidth); // A random position between 1 and WIDTH (inclusive)
+                    int nextPosition = RockRandom.Next(1, gameFieldWidth); // A random position between 1 and WIDTH (inclusive)
                     int nextRockType = RockRandom.Next(0, rockSymbols.Length); // A random type of rock
                     rocks[0, nextPosition] = rockSymbols[nextRockType];
                 }
@@ -380,7 +380,7 @@
         {
             for (int i = gameFieldHeight; i > 0; i--)
             {
-                for (int j = 0; j < gamefieldWidth; j++)
+                for (int j = 0; j < gameFieldWidth; j++)
                 {
                     rocks[i, j] = rocks[i - 1, j];  // make current to be == to the previous row
                 }
@@ -395,7 +395,7 @@
             // print only the elements with rocks
             for (int i = 1; i <= gameFieldHeight; i++)
             {
-                for (int j = 0; j < gamefieldWidth; j++)
+                for (int j = 0; j < gameFieldWidth; j++)
                 {
 
                     if (rocks[i, j] == rockSymbols[0])

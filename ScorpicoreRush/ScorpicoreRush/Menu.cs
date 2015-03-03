@@ -16,7 +16,6 @@
 
             SelectItem(Options);
 
-            // Console.ReadKey();
             CleanUpWindow();
         }
 
@@ -95,6 +94,8 @@
 
         public static void SetUpWindow()
         {
+            Console.Title = "Scorpicore Rush!";
+
             Console.WindowWidth = 20;
             Console.WindowHeight = 10;
             Console.BufferWidth = 20;
