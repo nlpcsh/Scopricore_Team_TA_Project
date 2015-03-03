@@ -41,6 +41,9 @@ namespace ScorpicoreRush
             Console.CursorVisible = false;
             Console.BufferHeight = Console.WindowHeight = WindowHeight;
             Console.BufferWidth = Console.WindowWidth = WindowWidth;
+
+            //Menu.ShowMenu();
+            Console.Clear();
         }
 
         public static void InitializeHero()
@@ -57,26 +60,18 @@ namespace ScorpicoreRush
         public static void Play()
         {
             SetUpWindow();
-            //Menu.ShowMenu();
-            Console.Clear();
-
             InitializeHero();
+            InitializeRocksMatrix();
 
             string bullet = "o";
             string currentWeapon = "W";
-
-            InitializeRocksMatrix();
 
             while (true)
             {
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo key = Console.ReadKey(true);
-                    while (Console.KeyAvailable)
-                    {
-                        Console.ReadKey(true); // clears the ReadKey buffer
-                    }
-
+                    while (Console.KeyAvailable) Console.ReadKey(true); // clears the ReadKey buffer
                     MoveHeroAndControlGameOnKeyStroke(key);
 
                     if (key.Key == ConsoleKey.Spacebar)
@@ -102,13 +97,7 @@ namespace ScorpicoreRush
                                 MoveHeroAndControlGameOnKeyStroke(key2);
                             }
 
-                            Console.Clear();
-                            PrintMenu(hero.points, PlayerLifeSymbol, hero.level);
-                            DrawGameMenu();
-                            DrawDownBorder();
-                            GenerateNewRowRocks();
-                            MoveAllRowsDown();
-                            ClearAndRedraw();
+                            ReDraw();
 
                             // Hero hit a rock !
                             DoesHeroHitARock();
@@ -135,7 +124,6 @@ namespace ScorpicoreRush
                                 //Console.WriteLine(currentWeapon);
                                 PrintOnPosition(x, y, currentWeapon, ConsoleColor.Cyan);
                             }
-
                             else
                             {
                                 switch (y % 3)
@@ -154,24 +142,27 @@ namespace ScorpicoreRush
                         }
                         //});
                         //currentWeapon = SelectWeapon();
-
                     }
-                    
                 }
 
-                Console.Clear();
-                PrintMenu(hero.points, PlayerLifeSymbol, hero.level);
-                DrawGameMenu();
-                DrawDownBorder();
-                GenerateNewRowRocks();
-                MoveAllRowsDown();
-                ClearAndRedraw();
+                ReDraw();
 
                 // Hero hit a rock !
                 DoesHeroHitARock();
                 
                 Thread.Sleep(TimeToSleep);
             }
+        }
+
+        public static void ReDraw()
+        {
+            Console.Clear();
+            PrintMenu(hero.points, PlayerLifeSymbol, hero.level);
+            DrawGameMenu();
+            DrawLowerBorder();
+            GenerateNewRowRocks();
+            MoveAllRowsDown();
+            ClearAndRedraw();
         }
 
         public static void DoesHeroHitARock()
@@ -223,7 +214,7 @@ namespace ScorpicoreRush
             Console.Clear();
             PrintMenu(hero.points, PlayerLifeSymbol, hero.level);
             DrawGameMenu();
-            DrawDownBorder();
+            DrawLowerBorder();
 
             InitializeRocksMatrix();
 
@@ -251,6 +242,7 @@ namespace ScorpicoreRush
                     QuitOrEndGame();
                     break;
                 default:
+                    // Do nothing, Ignore
                     break;
             }
         }
@@ -290,7 +282,7 @@ namespace ScorpicoreRush
             PrintTextInGameMenu(GameFieldWidth + 11, 8, "Level: ", ConsoleColor.DarkGray);
         }
 
-        public static void DrawDownBorder()
+        public static void DrawLowerBorder()
         {
             Console.SetCursorPosition(0, GameFieldHeight + 1);
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -377,7 +369,6 @@ namespace ScorpicoreRush
 
         public static void ClearAndRedraw()
         {
-
             ConsoleColor color = ConsoleColor.White;
 
             // print only the elements with rocks
@@ -385,7 +376,6 @@ namespace ScorpicoreRush
             {
                 for (int j = 0; j < GameFieldWidth; j++)
                 {
-
                     if (rocksMatrix[i, j] == RockSymbols[0])
                     {
                         color = ConsoleColor.Yellow;
