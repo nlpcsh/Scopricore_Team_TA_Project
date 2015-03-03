@@ -11,5 +11,6 @@ namespace ScorpicoreRush
         public int lives;
         public int points;
         public ConsoleColor color;
+        public string currentWeapon;
     }
 }

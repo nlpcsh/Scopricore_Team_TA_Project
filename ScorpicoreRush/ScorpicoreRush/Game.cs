@@ -55,6 +55,7 @@ namespace ScorpicoreRush
             hero.lives = 3;
             hero.points = 0;
             hero.color = ConsoleColor.Blue;
+            hero.currentWeapon = "W";
         }
 
         public static void Play()
@@ -62,9 +63,6 @@ namespace ScorpicoreRush
             SetUpWindow();
             InitializeHero();
             InitializeRocksMatrix();
-
-            string bullet = "o";
-            string currentWeapon = "W";
 
             while (true)
             {
@@ -119,11 +117,11 @@ namespace ScorpicoreRush
                             Console.SetCursorPosition(bulletX, bulletY);
                             Console.ForegroundColor = ConsoleColor.Cyan;
 
-                            if (currentWeapon.Equals("^") || currentWeapon.Equals("@") || currentWeapon.Equals("*") ||
-                                currentWeapon.Equals("o") || currentWeapon.Equals("!") || currentWeapon.Equals("$"))
+                            if (hero.currentWeapon.Equals("^") || hero.currentWeapon.Equals("@") || hero.currentWeapon.Equals("*") ||
+                                hero.currentWeapon.Equals("o") || hero.currentWeapon.Equals("!") || hero.currentWeapon.Equals("$"))
                             {
                                 //Console.WriteLine(currentWeapon);
-                                PrintOnPosition(bulletX, bulletY, currentWeapon, ConsoleColor.Cyan);
+                                PrintOnPosition(bulletX, bulletY, hero.currentWeapon, ConsoleColor.Cyan);
                             }
                             else
                             {

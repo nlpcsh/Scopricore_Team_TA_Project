@@ -114,10 +114,55 @@ namespace ScorpicoreRush
 
         private static void SaveScoreToFile(string playerName, int playerPoints)
         {
-            var streamWriter = new StreamWriter(@"..\..\Statistics.txt", true);
-            using (streamWriter)
+            try
             {
-                streamWriter.WriteLine("{0,-12}->{1,3}", playerName, playerPoints);
+                var streamWriter = new StreamWriter(@"..\..\Statistics.txt", true);
+                using (streamWriter)
+                {
+                    streamWriter.WriteLine("{0,-12}->{1,3}", playerName, playerPoints);
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                Console.WriteLine("No file path provided!");
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("Incorrect file path: " + FilePath);
+            }
+            catch (PathTooLongException)
+            {
+                Console.WriteLine("The entered file path is too long - 248 characters are the maximum!");
+            }
+            catch (DirectoryNotFoundException)
+            {
+                Console.WriteLine("The file path contains a directory that cannot be found!");
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("The file " + FilePath + " was not found!");
+            }
+            catch (IOException ioe)
+            {
+                Console.WriteLine(ioe.Message);
+            }
+            catch (UnauthorizedAccessException uoae)
+            {
+                Console.WriteLine(uoae.Message);
+            }
+            catch (NotSupportedException)
+            {
+                Console.WriteLine("Invalid file path format!");
+            }
+            catch (SecurityException)
+            {
+                Console.WriteLine("You don't have the required permissions to access this file!");
+            }
+            finally
+            {
+                // Console.WriteLine("Press any key to continue...");
+                // Console.ReadKey();
+                // Menu.SelectOptions();
             }
         }
 
