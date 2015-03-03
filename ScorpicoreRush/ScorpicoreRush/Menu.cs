@@ -59,7 +59,6 @@
             char key;
             int choice = 0;
             int numItems = choices.Length - 1;
-            int i = 0;
 
             while (true)
             {
@@ -72,18 +71,15 @@
                     {
                         if (choice >= 0 && choice <= numItems)
                         {
-                            i++;
-                            choice++;
+                           choice++;
                         }
                         else if (choice > numItems)
                         {
                             choice = 0;
-                            i = 0;
                         }
                         else if (choice < 0)
                         {
                             choice = numItems;
-                            i = numItems;
                         }
                         if (choice == 0)
                         {
@@ -150,18 +146,15 @@
                     {
                         if (choice >= 0 && choice <= numItems)
                         {
-                            i--;
                             choice--;
                         }
                         else if (choice > numItems)
                         {
                             choice = 0;
-                            i = 0;
                         }
                         else if (choice < 0)
                         {
                             choice = numItems;
-                            i = numItems;
                         }
                         if (choice == 0)
                         {
