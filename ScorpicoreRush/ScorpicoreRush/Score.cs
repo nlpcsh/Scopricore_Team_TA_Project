@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace ScorpicoreRush
 {
     internal class Scores
     {
+        static string FilePath = @"..\..\Statistics.txt";
         static char HorizontalBorderSymbol = '-';
         static char VerticalBorderSymbol = '|';
         static string BorderLine = new String(HorizontalBorderSymbol, 21);
@@ -26,7 +28,7 @@ namespace ScorpicoreRush
 
             try
             {
-                var streamReader = new StreamReader(@"..\..\Statistics.txt");
+                var streamReader = new StreamReader(FilePath);
 
                 using (streamReader)
                 {
@@ -39,9 +41,47 @@ namespace ScorpicoreRush
                     }
                 }
             }
-            catch (Exception e)
+            catch (ArgumentNullException)
             {
-                Console.WriteLine("ERROR: FILE NOT FOUND!");
+                Console.WriteLine("No file path provided!");
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("Incorrect file path: " + FilePath);
+            }
+            catch (PathTooLongException)
+            {
+                Console.WriteLine("The entered file path is too long - 248 characters are the maximum!");
+            }
+            catch (DirectoryNotFoundException)
+            {
+                Console.WriteLine("The file path contains a directory that cannot be found!");
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("The file " + FilePath + " was not found!");
+            }
+            catch (IOException ioe)
+            {
+                Console.WriteLine(ioe.Message);
+            }
+            catch (UnauthorizedAccessException uoae)
+            {
+                Console.WriteLine(uoae.Message);
+            }
+            catch (NotSupportedException)
+            {
+                Console.WriteLine("Invalid file path format!");
+            }
+            catch (SecurityException)
+            {
+                Console.WriteLine("You don't have the required permissions to access this file!");
+            }
+            finally
+            {
+                // Console.WriteLine("Press any key to continue...");
+                // Console.ReadKey();
+                // Menu.SelectOptions();
             }
         }
 
