@@ -80,14 +80,14 @@ namespace ScorpicoreRush
                         //Task.Run(() =>
                         //{
                         FireWeapon();
-                        
+
                         hero.level = hero.points / 10 + 1 ;
-                        int y = hero.y - 1;
-                        int x = hero.x + 1;
+                        int bulletY = hero.y - 1;
+                        int bulletX = hero.x + 1;
 
                         isPlaying = true;
 
-                        while ((y > 0) && isPlaying)
+                        while (isPlaying && (bulletY > 0))
                         {
                             if (Console.KeyAvailable)
                             {
@@ -100,33 +100,34 @@ namespace ScorpicoreRush
                             ReDraw();
 
                             // Hero hit a rock !
-                            DoesHeroHitARock();
+                            CheckIfHeroHitByARock();
 
                             // bullet hit a rock !  // TODO - need to be improved
-                            if ((rocksMatrix[y, x] != ' ') || (rocksMatrix[y + 1, x] != ' '))
+                            if ((rocksMatrix[bulletY, bulletX] != ' ') || (rocksMatrix[bulletY + 1, bulletX] != ' '))
                             {
                                 using (SoundPlayer bulletHitARockSound = new SoundPlayer(@"..\..\Pop_And_Explosion.wav"))
                                 {
                                     bulletHitARockSound.Play();
                                 }
-                                rocksMatrix[y, x] = ' ';
-                                rocksMatrix[y + 1, x] = ' '; // if the bullet jump over the rock ( from y-=2 )
-                                rocksMatrix[y - 1, x] = ' ';
+                                rocksMatrix[bulletY, bulletX] = ' ';
+                                rocksMatrix[bulletY + 1, bulletX] = ' '; // if the bullet jump over the rock ( from y-=2 )
+                                rocksMatrix[bulletY - 1, bulletX] = ' ';
                                 hero.points++;
                                 break;
                             }
 
-                            Console.SetCursorPosition(x, y);
+                            Console.SetCursorPosition(bulletX, bulletY);
                             Console.ForegroundColor = ConsoleColor.Cyan;
 
-                            if (currentWeapon.Equals("^") || currentWeapon.Equals("@") || currentWeapon.Equals("*") || currentWeapon.Equals("o") || currentWeapon.Equals("!") || currentWeapon.Equals("$"))
+                            if (currentWeapon.Equals("^") || currentWeapon.Equals("@") || currentWeapon.Equals("*") ||
+                                currentWeapon.Equals("o") || currentWeapon.Equals("!") || currentWeapon.Equals("$"))
                             {
                                 //Console.WriteLine(currentWeapon);
-                                PrintOnPosition(x, y, currentWeapon, ConsoleColor.Cyan);
+                                PrintOnPosition(bulletX, bulletY, currentWeapon, ConsoleColor.Cyan);
                             }
                             else
                             {
-                                switch (y % 3)
+                                switch (bulletY % 3)
                                 {
                                     case 0: Console.Write("/"); break;
                                     case 1: Console.Write("-"); break;
@@ -135,7 +136,7 @@ namespace ScorpicoreRush
                                 }
 
                                 //y--;
-                                y -= 2; // faster movement of the bullet
+                                bulletY -= 2; // faster movement of the bullet
                             }
 
                             Thread.Sleep(TimeToSleep);
@@ -147,9 +148,9 @@ namespace ScorpicoreRush
 
                 ReDraw();
 
-                // Hero hit a rock !
-                DoesHeroHitARock();
-                
+                // Is hero hit by a rock?
+                CheckIfHeroHitByARock();
+
                 Thread.Sleep(TimeToSleep);
             }
         }
@@ -165,11 +166,10 @@ namespace ScorpicoreRush
             ClearAndRedraw();
         }
 
-        public static void DoesHeroHitARock()
+        public static void CheckIfHeroHitByARock()
         {
             if ((rocksMatrix[hero.y, hero.x] != ' ') || (rocksMatrix[hero.y, hero.x + 1] != ' ') || (rocksMatrix[hero.y, hero.x + 2] != ' '))
             {
-
                 hero.lives -= 1;
 
                 if (hero.lives == 0)
@@ -264,7 +264,7 @@ namespace ScorpicoreRush
         public static void PrintMenu(int points, char playerLives, int level)
         {
             PrintTextInGameMenu(GameFieldWidth + 22, 4, points.ToString(), ConsoleColor.Gray);
-            PrintTextInGameMenu(GameFieldWidth + 20, 6, new string(playerLives, hero.lives), ConsoleColor.Red);  //TODO: Print this according to the logic for loosing lives 
+            PrintTextInGameMenu(GameFieldWidth + 20, 6, new string(playerLives, hero.lives), ConsoleColor.Red);  //TODO: Print this according to the logic for losing lives 
             PrintTextInGameMenu(GameFieldWidth + 22, 8, level.ToString(), ConsoleColor.Gray);
         }
 
