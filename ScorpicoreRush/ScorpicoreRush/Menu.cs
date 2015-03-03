@@ -31,22 +31,22 @@
             SetUpWindow();
 
             int defaultChoice = 0;
-
             DisplayChoices(defaultChoice);
 
             int choice = ChooseItem(Choices);
-
-            if (Choices[choice] == "Start")
+            switch (Choices[choice])
             {
-                ScorpicoreRush.Play();
-            }
-            if (Choices[choice] == "Help")
-            {
-                //  Help.GameHelp();
-            }
-            if (Choices[choice] == "HighScores")
-            {
-                Stats.PrintScores();
+                case "Start":
+                    ScorpicoreRush.Play();
+                    break;
+                case "HighScores":
+                    Stats.PrintScores();
+                    break;
+                case "Help":
+                    //  Help.GameHelp();
+                    break;
+                default:
+                    break;
             }
 
             Console.ReadKey();
