@@ -28,17 +28,15 @@
         static int gamefieldWidth = 70;
         static int gameFieldHeight = 20;
 
-
-
-        static char[] rockSymbols = { '$', '&', '#', };            // shoot $ avoid & and #, # is indestructable...  
-        static int difficulty = 10;                                // % of each row covered with rocks
+        static char[] rockSymbols = { '$', '&', '#', }; // shoot $ avoid & and #, # is indestructable...  
+        static int difficulty = 10;                     // % of each row covered with rocks
         static int timeToSleep = 200;   
-        static int rocksPerRow = 10;         // The max number of rocks per row. Integer division
-        static char[,] rocks = new char[gameFieldHeight + 1, gamefieldWidth];    // The first row keeps new rocks positions
- 
-        static char playerLives = '\u2665';
+        static int maxRocksPerRow = 10;         // The max number of rocks per row. Integer division
+        static char[,] rocks = new char[gameFieldHeight + 1, gamefieldWidth];    // The first row keeps new rocks positions 
+        static char playerLifeSymbol = '\u2665'; // A heart
+
         // To ensure the randomness :) 
-        static Random rand = new Random();
+        static Random Rand = new Random();
         static Random RockRandom = new Random();
 
         static bool isPlaying = true;
@@ -109,7 +107,7 @@
                             }
 
                             Console.Clear();
-                            PrintMenu(Hero.points, playerLives, Hero.level);
+                            PrintMenu(Hero.points, playerLifeSymbol, Hero.level);
                             DrawGameMenu();
                             DrawDownBorder();
                             GenerateNewRowRocks();
@@ -166,7 +164,7 @@
                 }
 
                 Console.Clear();
-                PrintMenu(Hero.points, playerLives, Hero.level);
+                PrintMenu(Hero.points, playerLifeSymbol, Hero.level);
                 DrawGameMenu();
                 DrawDownBorder();
                 GenerateNewRowRocks();
@@ -227,7 +225,7 @@
             }
             isPlaying = false; // ensure breaking the bullets while cycle
             Console.Clear();
-            PrintMenu(Hero.points, playerLives, Hero.level);
+            PrintMenu(Hero.points, playerLifeSymbol, Hero.level);
             DrawGameMenu();
             DrawDownBorder();
 
@@ -372,11 +370,11 @@
                 rocks[0, j] = ' ';
             }
 
-            int randomRocksPerRow = RockRandom.Next(0, rocksPerRow); // Random number of the rocks per row between 0 and rocksPerRow (rocksPerRow not included)
+            int randomRocksPerRow = RockRandom.Next(0, maxRocksPerRow); // Random number of the rocks per row between 0 and rocksPerRow (rocksPerRow not included)
 
             for (int i = 0; i < randomRocksPerRow; i++)
             {
-                if (rand.Next(1, 5) == 1) // one of 5 rows have rocks
+                if (Rand.Next(1, 5) == 1) // one of 5 rows have rocks
                 {
                     int nextPosition = RockRandom.Next(1, gamefieldWidth); // A random position between 1 and WIDTH (inclusive)
                     int nextRockType = RockRandom.Next(0, rockSymbols.Length); // A random type of rock

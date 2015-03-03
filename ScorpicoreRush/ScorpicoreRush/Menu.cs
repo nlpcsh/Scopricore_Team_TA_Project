@@ -6,10 +6,8 @@
 
     class Menu
     {
-
         public static void SetScreen()
         {
-
             Console.WindowWidth = 20;//  
             Console.WindowHeight = 10;// 
             Console.BufferHeight = 10;
@@ -22,8 +20,6 @@
             Console.Clear();
             Console.CursorVisible = false;
 
-
-
             string[] choices = { "Start", "HighScores", "Help" };
 
             for (int i = 0; i < choices.Length; i++)
@@ -34,31 +30,23 @@
 
             int choice = ChooseItem(choices);
 
-
-
             if (choices[choice] == "Start")
             {
-
                 ScorpicoreRush.Play();
             }
             if (choices[choice] == "Help")
             {
                 //  Help.GameHelp();
-
             }
             if (choices[choice] == "HighScores")
             {
-
-
                 Stats.PrintScores();
-               
-
             }
-
 
             Console.ReadKey();
             CleanUp();
         }
+
         public static int ChooseItem(string[] choices)
         {
             ConsoleKeyInfo cki;
@@ -67,39 +55,29 @@
             int numItems = choices.Length - 1;
             int i = 1;
 
-
             while (true)
             {
                 if (Console.KeyAvailable)
                 {
-
-
                     cki = Console.ReadKey(true);
                     key = cki.KeyChar;
 
                     if (cki.Key == ConsoleKey.DownArrow)
                     {
-
                         if (choice >= 0 && choice <= numItems)
                         {
-
                             i++;
                             choice++;
                         }
                         else if (choice > numItems)
                         {
-
                             choice = 0;
                             i = 0;
-
-
                         }
                         else if (choice < 0)
                         {
-
                             choice = numItems;
                             i = numItems;
-
                         }
                         if (choice == 0)
                         {
@@ -160,37 +138,24 @@
                             Console.BackgroundColor = ConsoleColor.Black;
                             Console.WriteLine(choices[1]);
                             Console.ResetColor();
-
-
                         }
-
-
-
                     }
                     else if (cki.Key == ConsoleKey.UpArrow)
                     {
-
                         if (choice >= 0 && choice <= numItems)
                         {
-
-
                             i--;
                             choice--;
-
                         }
                         else if (choice > numItems)
                         {
                             choice = 0;
                             i = 0;
-
-
                         }
                         else if (choice < 0)
                         {
-
                             choice = numItems;
                             i = numItems;
-
                         }
                         if (choice == 0)
                         {
@@ -251,11 +216,7 @@
                             Console.BackgroundColor = ConsoleColor.Black;
                             Console.WriteLine(choices[1]);
                             Console.ResetColor();
-
-
                         }
-
-
                     }
                     else if (key == '\r') // enter 
                     {
@@ -271,7 +232,5 @@
             Console.CursorVisible = true;
             Console.Clear();
         }
-
-
     }
 }
