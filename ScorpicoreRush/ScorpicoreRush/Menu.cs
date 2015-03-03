@@ -1,59 +1,65 @@
 ﻿namespace ScorpicoreRush
 {
-
     using System;
     using System.IO;
 
     class Menu
     {
-        public static void SetScreen()
+        public static string[] Choices = { "Start", "HighScores", "Help" };
+
+        public static void DisplayChoices(int choice)
         {
-            Console.WindowWidth = 20;//  
-            Console.WindowHeight = 10;// 
-            Console.BufferHeight = 10;
-            Console.BufferWidth = 20;
-        }
-        public static void ShowMenu()
-        {
-            SetScreen();
-
-            Console.Clear();
-            Console.CursorVisible = false;
-
-            string[] choices = { "Start", "HighScores", "Help" };
-
-            for (int i = 0; i < choices.Length; i++)
+            for (int i = 0; i < Choices.Length; i++)
             {
                 Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + i);
-                Console.WriteLine(choices[i]);
+                if (i == choice)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.WriteLine(Choices[choice]);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine(Choices[i]);
+                }
             }
+        }
 
-            int choice = ChooseItem(choices);
+        public static void ShowMenu()
+        {
+            SetUpWindow();
 
-            if (choices[choice] == "Start")
+            int defaultChoice = 0;
+
+            DisplayChoices(defaultChoice);
+
+            int choice = ChooseItem(Choices);
+
+            if (Choices[choice] == "Start")
             {
                 ScorpicoreRush.Play();
             }
-            if (choices[choice] == "Help")
+            if (Choices[choice] == "Help")
             {
                 //  Help.GameHelp();
             }
-            if (choices[choice] == "HighScores")
+            if (Choices[choice] == "HighScores")
             {
                 Stats.PrintScores();
             }
 
             Console.ReadKey();
-            CleanUp();
+            CleanUpWindow();
         }
 
         public static int ChooseItem(string[] choices)
         {
             ConsoleKeyInfo cki;
             char key;
-            int choice = 1;
+            int choice = 0;
             int numItems = choices.Length - 1;
-            int i = 1;
+            int i = 0;
 
             while (true)
             {
@@ -226,7 +232,18 @@
             }
         }
 
-        public static void CleanUp()
+        public static void SetUpWindow()
+        {
+            Console.WindowWidth = 20;
+            Console.WindowHeight = 10;
+            Console.BufferWidth = 20;
+            Console.BufferHeight = 10;
+
+            Console.Clear();
+            Console.CursorVisible = false;
+        }
+
+        public static void CleanUpWindow()
         {
             Console.ResetColor();
             Console.CursorVisible = true;
