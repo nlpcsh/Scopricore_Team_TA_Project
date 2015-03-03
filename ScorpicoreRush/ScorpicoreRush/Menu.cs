@@ -7,31 +7,12 @@
     {
         public static string[] Options = { "Start", "HighScores", "Help" };
 
-        public static void DisplayOptions(int selection)
-        {
-            for (int i = 0; i < Options.Length; i++)
-            {
-                Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + i);
-                if (i == selection)
-                {
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.BackgroundColor = ConsoleColor.Gray;
-                    Console.WriteLine(Options[selection]);
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine(Options[i]);
-                }
-            }
-        }
-
         public static void ShowMenu()
         {
             SetUpWindow();
 
             int defaultSelectedItem = 0;
-            DisplayOptions(defaultSelectedItem);
+            DisplayMenuOptions(defaultSelectedItem);
 
             int selectedItem = SelectItem(Options);
             switch (Options[selectedItem])
@@ -81,66 +62,7 @@
                         {
                             choice = numItems;
                         }
-                        if (choice == 0)
-                        {
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3);
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.Gray;
-                            Console.WriteLine(choices[choice]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 1);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[1]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 2);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[2]);
-                            Console.ResetColor();
-                        }
-                        if (choice == 1)
-                        {
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 1);
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.Gray;
-                            Console.WriteLine(choices[choice]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[0]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 2);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[2]);
-                            Console.ResetColor();
-                        }
-                        if (choice == 2)
-                        {
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 2);
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.Gray;
-                            Console.WriteLine(choices[choice]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[0]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 1);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[1]);
-                            Console.ResetColor();
-                        }
+                        DisplayMenuOptions(choice);
                     }
                     else if (cki.Key == ConsoleKey.UpArrow)
                     {
@@ -156,71 +78,31 @@
                         {
                             choice = numItems;
                         }
-                        if (choice == 0)
-                        {
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3);
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.Gray;
-                            Console.WriteLine(choices[choice]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 1);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[1]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 2);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[2]);
-                            Console.ResetColor();
-                        }
-                        if (choice == 1)
-                        {
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 1);
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.Gray;
-                            Console.WriteLine(choices[choice]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[0]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 2);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[2]);
-                            Console.ResetColor();
-                        }
-                        if (choice == 2)
-                        {
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 2);
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.BackgroundColor = ConsoleColor.Gray;
-                            Console.WriteLine(choices[choice]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[0]);
-                            Console.ResetColor();
-
-                            Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + 1);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.WriteLine(choices[1]);
-                            Console.ResetColor();
-                        }
+                        DisplayMenuOptions(choice);
                     }
                     else if (key == '\r') // enter 
                     {
                         return choice;
                     }
+                }
+            }
+        }
+
+        public static void DisplayMenuOptions(int selection)
+        {
+            for (int i = 0; i < Options.Length; i++)
+            {
+                Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + i);
+                if (i == selection)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.WriteLine(Options[selection]);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine(Options[i]);
                 }
             }
         }
