@@ -5,23 +5,23 @@
 
     class Menu
     {
-        public static string[] Choices = { "Start", "HighScores", "Help" };
+        public static string[] Options = { "Start", "HighScores", "Help" };
 
-        public static void DisplayChoices(int choice)
+        public static void DisplayOptions(int selection)
         {
-            for (int i = 0; i < Choices.Length; i++)
+            for (int i = 0; i < Options.Length; i++)
             {
                 Console.SetCursorPosition(Console.WindowWidth / 3, Console.WindowHeight / 3 + i);
-                if (i == choice)
+                if (i == selection)
                 {
                     Console.ForegroundColor = ConsoleColor.Black;
                     Console.BackgroundColor = ConsoleColor.Gray;
-                    Console.WriteLine(Choices[choice]);
+                    Console.WriteLine(Options[selection]);
                     Console.ResetColor();
                 }
                 else
                 {
-                    Console.WriteLine(Choices[i]);
+                    Console.WriteLine(Options[i]);
                 }
             }
         }
@@ -30,11 +30,11 @@
         {
             SetUpWindow();
 
-            int defaultChoice = 0;
-            DisplayChoices(defaultChoice);
+            int defaultSelectedItem = 0;
+            DisplayOptions(defaultSelectedItem);
 
-            int choice = ChooseItem(Choices);
-            switch (Choices[choice])
+            int selectedItem = SelectItem(Options);
+            switch (Options[selectedItem])
             {
                 case "Start":
                     ScorpicoreRush.Play();
@@ -53,7 +53,7 @@
             CleanUpWindow();
         }
 
-        public static int ChooseItem(string[] choices)
+        public static int SelectItem(string[] choices)
         {
             ConsoleKeyInfo cki;
             char key;
