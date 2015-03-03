@@ -5,7 +5,7 @@
 
     class Menu
     {
-        public static string[] Options = { "Start", "HighScores", "Help" };
+        public static string[] Options = { "Start", "HighScores", "Help" , "Exit"};
         public static int DefaultOption = 0;
 
         public static void ShowMenu()
@@ -32,6 +32,10 @@
                     break;
                 case "Help":
                     //  Help.GameHelp();
+                    break;
+                case "Exit":
+                    CleanUpWindow();
+                    Console.WriteLine("Bye-Bye!");
                     break;
                 default:
                     break;
