@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ScorpicoreRush
 {
-    internal class Scores
+    internal class Score
     {
         static string FilePath = @"..\..\Statistics.txt";
         static char HorizontalBorderSymbol = '-';

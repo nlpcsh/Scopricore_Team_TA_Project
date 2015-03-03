@@ -1,24 +1,13 @@
-﻿namespace ScorpicoreRush
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Media;
+using System.Text;
+using System.Threading;
+//   using System.Threading.Tasks;
+
+namespace ScorpicoreRush
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Media;
-    using System.Text;
-    using System.Threading;
-    //   using System.Threading.Tasks;
-
-    struct Scorpicore
-    {
-        public int x;
-        public int y;
-        public string face;
-        public int lives;
-        public int points;
-        public int level;
-        public ConsoleColor color;
-    }
-
     class Game
     {
         static int windowWidth = 100;
@@ -27,12 +16,14 @@
         static int gameFieldWidth = 70;
         static int gameFieldHeight = 20;
 
-        static char[] rockSymbols = { '$', '&', '#', }; // shoot $ avoid & and #, # is indestructable...  
-        static int difficulty = 10;                     // % of each row covered with rocks
-        static int timeToSleep = 200;   
-        static int maxRocksPerRow = 10;         // The max number of rocks per row. Integer division
-        static char[,] rocks = new char[gameFieldHeight + 1, gameFieldWidth];    // The first row keeps new rocks positions 
+        static int difficulty = 10; // % of each row covered with rocks
+        static int timeToSleep = 200;
+        static int maxRocksPerRow = 10; // The max number of rocks per row. Integer division
+
+        static char[] rockSymbols = { '$', '&', '#' }; // shoot $ avoid & and #, # is indestructable...  
         static char playerLifeSymbol = '\u2665'; // A heart
+
+        static char[,] rocks = new char[gameFieldHeight + 1, gameFieldWidth];    // The first row keeps new rocks positions 
 
         // To ensure the randomness :) 
         static Random Rand = new Random();
@@ -55,10 +46,11 @@
 
             Hero.x = gameFieldWidth / 2;
             Hero.y = gameFieldHeight;
-            Hero.face = "<^>";
-            Hero.lives = 3;
+            Hero.avatar = "<^>";
             Hero.level = 1;
+            Hero.lives = 3;
             Hero.points = 0;
+            Hero.color = ConsoleColor.Red;
 
             string bullet = "o";
             string currentWeapon = "W";
@@ -193,7 +185,7 @@
         {
             Console.Clear();
             Console.SetCursorPosition(0, 0);
-            Scores.ShowScore(Hero.points, Hero.level);
+            Score.ShowScore(Hero.points, Hero.level);
             Console.ResetColor();
             Menu.SelectOptions();
         }
@@ -416,7 +408,7 @@
                 }
             }
 
-            PrintOnPosition(Hero.x, Hero.y, Hero.face, ConsoleColor.White);
+            PrintOnPosition(Hero.x, Hero.y, Hero.avatar, ConsoleColor.White);
 
         }
     }

@@ -27,7 +27,7 @@
                     Game.Play();
                     break;
                 case "HighScores":
-                    Scores.ShowHighScores();
+                    Score.ShowHighScores();
                     break;
                 case "Help":
                     //  Help.GameHelp();
