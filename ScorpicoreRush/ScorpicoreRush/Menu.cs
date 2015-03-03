@@ -50,31 +50,17 @@
 
                     if (cki.Key == ConsoleKey.DownArrow)
                     {
-                        if (choice >= 0 && choice <= numItems)
-                        {
-                           choice++;
-                        }
-                        else if (choice > numItems)
+                        choice++;
+                        if (choice > numItems)
                         {
                             choice = 0;
-                        }
-                        else if (choice < 0)
-                        {
-                            choice = numItems;
                         }
                         DisplayMenuOptions(choice);
                     }
                     else if (cki.Key == ConsoleKey.UpArrow)
                     {
-                        if (choice >= 0 && choice <= numItems)
-                        {
-                            choice--;
-                        }
-                        else if (choice > numItems)
-                        {
-                            choice = 0;
-                        }
-                        else if (choice < 0)
+                        choice--;
+                        if (choice < 0)
                         {
                             choice = numItems;
                         }
