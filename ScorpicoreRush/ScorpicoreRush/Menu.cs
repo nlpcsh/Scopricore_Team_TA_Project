@@ -5,10 +5,10 @@
 
     class Menu
     {
-        public static string[] Options = { "Start", "HighScores", "Help" , "Exit"};
+        public static string[] Options = { "Play", "HighScores", "Help" , "Exit"};
         public static int DefaultOption = 0;
 
-        public static void ShowMenu()
+        public static void SelectOptions()
         {
             SetUpWindow();
 
@@ -24,11 +24,11 @@
         {
             switch (Options[selectedItem])
             {
-                case "Start":
-                    ScorpicoreRush.Play();
+                case "Play":
+                    Game.Play();
                     break;
                 case "HighScores":
-                    Stats.ShowHighScores();
+                    Scores.ShowHighScores();
                     break;
                 case "Help":
                     //  Help.GameHelp();

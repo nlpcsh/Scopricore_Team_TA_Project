@@ -1,6 +1,5 @@
 ﻿namespace ScorpicoreRush
 {
-
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -20,7 +19,7 @@
         public ConsoleColor color;
     }
 
-    class ScorpicoreRush
+    class Game
     {
         static int windowWidth = 100;
         static int windowHeight = 30;
@@ -43,15 +42,9 @@
 
         static Object Hero = new Object();
 
-        static void Main()
-        {
-            Menu.ShowMenu();
-            Play();
-        }
-
         public static void Play()
         {
-            Console.Title = "Scorpiocore Rush!";
+            Console.Title = "Scorpicore Rush!";
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.CursorVisible = false;
             Console.BufferHeight = Console.WindowHeight = windowHeight;
@@ -200,9 +193,9 @@
         {
             Console.Clear();
             Console.SetCursorPosition(0, 0);
-            Stats.ShowScore(Hero.points, Hero.level);
+            Scores.ShowScore(Hero.points, Hero.level);
             Console.ResetColor();
-            Menu.ShowMenu();
+            Menu.SelectOptions();
         }
 
         public static void InitialRocksInitialization()

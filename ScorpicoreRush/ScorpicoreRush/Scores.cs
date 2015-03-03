@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ScorpicoreRush
 {
 
-    internal class Stats
+    internal class Scores
     {
         public static void ShowScore(int points, int level)
         {
