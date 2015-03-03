@@ -28,7 +28,7 @@
                     ScorpicoreRush.Play();
                     break;
                 case "HighScores":
-                    Stats.PrintScores();
+                    Stats.ShowHighScores();
                     break;
                 case "Help":
                     //  Help.GameHelp();
