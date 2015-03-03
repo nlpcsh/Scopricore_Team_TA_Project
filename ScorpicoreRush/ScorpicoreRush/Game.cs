@@ -77,7 +77,7 @@ namespace ScorpicoreRush
                         Console.ReadKey(true); // clears the ReadKey buffer
                     }
 
-                    HeroMovementAndGameControls(key);
+                    MoveHeroAndControlGameOnKeyStroke(key);
 
                     if (key.Key == ConsoleKey.Spacebar)
                     {
@@ -99,7 +99,7 @@ namespace ScorpicoreRush
                                 ConsoleKeyInfo key2 = Console.ReadKey(true);
                                 while (Console.KeyAvailable) Console.ReadKey(true); // clears the ReadKey buffer
 
-                                HeroMovementAndGameControls(key2);
+                                MoveHeroAndControlGameOnKeyStroke(key2);
                             }
 
                             Console.Clear();
@@ -231,39 +231,27 @@ namespace ScorpicoreRush
             hero.y = GameFieldHeight;
         }
 
-        public static void HeroMovementAndGameControls(ConsoleKeyInfo key)
+        public static void MoveHeroAndControlGameOnKeyStroke(ConsoleKeyInfo key)
         {
-            if (key.Key == ConsoleKey.LeftArrow)
+            switch (key.Key)
             {
-                if (hero.x - 1 >= 0)
-                {
-                    hero.x -= 1;
-                }
-            }
-            else if (key.Key == ConsoleKey.RightArrow)
-            {
-                if (hero.x + 1 < GameFieldWidth)
-                {
-                    hero.x += 1;
-                }
-            }
-            else if (key.Key == ConsoleKey.UpArrow)
-            {
-                if (hero.y - 1 >= 0)
-                {
-                    hero.y -= 1;
-                }
-            }
-            else if (key.Key == ConsoleKey.DownArrow)
-            {
-                if (hero.y + 1 <= GameFieldHeight)
-                {
-                    hero.y += 1;
-                }
-            }
-            else if (key.Key == ConsoleKey.Q)
-            {
-                QuitOrEndGame();
+                case ConsoleKey.LeftArrow:
+                    hero.x = (hero.x > 0) ? hero.x - 1 : hero.x;
+                    break;
+                case ConsoleKey.RightArrow:
+                    hero.x = (hero.x + 1 < GameFieldWidth) ? hero.x + 1 : hero.x;
+                    break;
+                case ConsoleKey.UpArrow:
+                    hero.y = (hero.y > 0) ? hero.y - 1 : hero.y;
+                    break;
+                case ConsoleKey.DownArrow:
+                    hero.y = (hero.y + 1 <= GameFieldHeight) ? hero.y + 1 : hero.y;
+                    break;
+                case ConsoleKey.Q:
+                    QuitOrEndGame();
+                    break;
+                default:
+                    break;
             }
         }
 
