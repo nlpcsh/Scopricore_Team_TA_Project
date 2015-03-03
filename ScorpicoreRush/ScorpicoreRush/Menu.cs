@@ -6,15 +6,22 @@
     class Menu
     {
         public static string[] Options = { "Start", "HighScores", "Help" };
+        public static int DefaultOption = 0;
 
         public static void ShowMenu()
         {
             SetUpWindow();
 
-            int defaultSelectedItem = 0;
-            DisplayMenuOptions(defaultSelectedItem);
+            DisplayMenuOptions(DefaultOption);
 
-            int selectedItem = SelectItem(Options);
+            SelectItem(Options);
+
+            // Console.ReadKey();
+            CleanUpWindow();
+        }
+
+        public static void ExecuteSelection(int selectedItem)
+        {
             switch (Options[selectedItem])
             {
                 case "Start":
@@ -29,46 +36,35 @@
                 default:
                     break;
             }
-
-            Console.ReadKey();
-            CleanUpWindow();
         }
 
-        public static int SelectItem(string[] choices)
+        public static void SelectItem(string[] choices)
         {
-            ConsoleKeyInfo cki;
-            char key;
             int choice = 0;
-            int numItems = choices.Length - 1;
+            int maxItemIndex = choices.Length - 1;
+            char beep = '\u0007';
 
             while (true)
             {
                 if (Console.KeyAvailable)
                 {
-                    cki = Console.ReadKey(true);
-                    key = cki.KeyChar;
-
-                    if (cki.Key == ConsoleKey.DownArrow)
+                    ConsoleKeyInfo cki = Console.ReadKey(true);
+                    switch (cki.Key)
                     {
-                        choice++;
-                        if (choice > numItems)
-                        {
-                            choice = 0;
-                        }
-                        DisplayMenuOptions(choice);
-                    }
-                    else if (cki.Key == ConsoleKey.UpArrow)
-                    {
-                        choice--;
-                        if (choice < 0)
-                        {
-                            choice = numItems;
-                        }
-                        DisplayMenuOptions(choice);
-                    }
-                    else if (key == '\r') // enter 
-                    {
-                        return choice;
+                        case ConsoleKey.DownArrow:
+                            choice = (choice == maxItemIndex) ? 0 : choice + 1;
+                            DisplayMenuOptions(choice);
+                            break;
+                        case ConsoleKey.Enter:
+                            ExecuteSelection(choice);
+                            break;
+                        case ConsoleKey.UpArrow:
+                            choice = (choice == 0) ? maxItemIndex : choice - 1;
+                            DisplayMenuOptions(choice);
+                            break;
+                        default:
+                            Console.WriteLine(beep);
+                            break;
                     }
                 }
             }
