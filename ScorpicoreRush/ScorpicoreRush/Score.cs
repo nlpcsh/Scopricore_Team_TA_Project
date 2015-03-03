@@ -33,7 +33,7 @@ namespace ScorpicoreRush
                     string line = streamReader.ReadLine();
                     while (line != null)
                     {
-                        Console.WriteLine("{0,25}", line);
+                        Console.WriteLine("{0,25}", VerticalBorderSymbol + " " + line + " " + VerticalBorderSymbol);
                         Console.WriteLine(FormatSpecifier, BorderLine);
                         line = streamReader.ReadLine();
                     }
@@ -76,9 +76,7 @@ namespace ScorpicoreRush
             var streamWriter = new StreamWriter(@"..\..\Statistics.txt", true);
             using (streamWriter)
             {
-                streamWriter.WriteLine(BorderLine);
-                streamWriter.WriteLine("* {0,-12}->  {1} *", playerName, playerPoints);
-                streamWriter.WriteLine(BorderLine);
+                streamWriter.WriteLine("{0,-12}->{1,3}", playerName, playerPoints);
             }
         }
 
