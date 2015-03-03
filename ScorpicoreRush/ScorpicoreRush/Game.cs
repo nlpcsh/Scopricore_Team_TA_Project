@@ -31,7 +31,7 @@ namespace ScorpicoreRush
 
         static bool isPlaying = true;
 
-        static Scorpicore Hero = new Scorpicore();
+        static Scorpicore hero = new Scorpicore();
 
         public static void Play()
         {
@@ -44,13 +44,13 @@ namespace ScorpicoreRush
             //Menu.ShowMenu();
             Console.Clear();
 
-            Hero.x = gameFieldWidth / 2;
-            Hero.y = gameFieldHeight;
-            Hero.avatar = "<^>";
-            Hero.level = 1;
-            Hero.lives = 3;
-            Hero.points = 0;
-            Hero.color = ConsoleColor.Red;
+            hero.x = gameFieldWidth / 2;
+            hero.y = gameFieldHeight;
+            hero.avatar = "<^>";
+            hero.level = 1;
+            hero.lives = 3;
+            hero.points = 0;
+            hero.color = ConsoleColor.Blue;
 
             string bullet = "o";
             string currentWeapon = "W";
@@ -75,9 +75,9 @@ namespace ScorpicoreRush
                         //{
                         FireWeapon();
                         
-                        Hero.level = Hero.points / 10 + 1 ;
-                        int y = Hero.y - 1;
-                        int x = Hero.x + 1;
+                        hero.level = hero.points / 10 + 1 ;
+                        int y = hero.y - 1;
+                        int x = hero.x + 1;
 
                         isPlaying = true;
 
@@ -92,7 +92,7 @@ namespace ScorpicoreRush
                             }
 
                             Console.Clear();
-                            PrintMenu(Hero.points, playerLifeSymbol, Hero.level);
+                            PrintMenu(hero.points, playerLifeSymbol, hero.level);
                             DrawGameMenu();
                             DrawDownBorder();
                             GenerateNewRowRocks();
@@ -112,7 +112,7 @@ namespace ScorpicoreRush
                                 rocks[y, x] = ' ';
                                 rocks[y + 1, x] = ' '; // if the bullet jump over the rock ( from y-=2 )
                                 rocks[y - 1, x] = ' ';
-                                Hero.points++;
+                                hero.points++;
                                 break;
                             }
 
@@ -149,7 +149,7 @@ namespace ScorpicoreRush
                 }
 
                 Console.Clear();
-                PrintMenu(Hero.points, playerLifeSymbol, Hero.level);
+                PrintMenu(hero.points, playerLifeSymbol, hero.level);
                 DrawGameMenu();
                 DrawDownBorder();
                 GenerateNewRowRocks();
@@ -165,12 +165,12 @@ namespace ScorpicoreRush
 
         public static void DoesHeroHitARock()
         {
-            if ((rocks[Hero.y, Hero.x] != ' ') || (rocks[Hero.y, Hero.x + 1] != ' ') || (rocks[Hero.y, Hero.x + 2] != ' '))
+            if ((rocks[hero.y, hero.x] != ' ') || (rocks[hero.y, hero.x + 1] != ' ') || (rocks[hero.y, hero.x + 2] != ' '))
             {
 
-                Hero.lives -= 1;
+                hero.lives -= 1;
 
-                if (Hero.lives == 0)
+                if (hero.lives == 0)
                 {
                     QuitOrEndGame();
                 }
@@ -185,7 +185,7 @@ namespace ScorpicoreRush
         {
             Console.Clear();
             Console.SetCursorPosition(0, 0);
-            Score.ShowScore(Hero.points, Hero.level);
+            Score.ShowScore(hero.points, hero.level);
             Console.ResetColor();
             Menu.SelectOptions();
         }
@@ -210,44 +210,44 @@ namespace ScorpicoreRush
             }
             isPlaying = false; // ensure breaking the bullets while cycle
             Console.Clear();
-            PrintMenu(Hero.points, playerLifeSymbol, Hero.level);
+            PrintMenu(hero.points, playerLifeSymbol, hero.level);
             DrawGameMenu();
             DrawDownBorder();
 
             InitialRocksInitialization();
 
-            Hero.x = gameFieldWidth / 2;
-            Hero.y = gameFieldHeight;
+            hero.x = gameFieldWidth / 2;
+            hero.y = gameFieldHeight;
         }
 
         public static void HeroMovementAndGameControls(ConsoleKeyInfo key)
         {
             if (key.Key == ConsoleKey.LeftArrow)
             {
-                if (Hero.x - 1 >= 0)
+                if (hero.x - 1 >= 0)
                 {
-                    Hero.x -= 1;
+                    hero.x -= 1;
                 }
             }
             else if (key.Key == ConsoleKey.RightArrow)
             {
-                if (Hero.x + 1 < gameFieldWidth)
+                if (hero.x + 1 < gameFieldWidth)
                 {
-                    Hero.x += 1;
+                    hero.x += 1;
                 }
             }
             else if (key.Key == ConsoleKey.UpArrow)
             {
-                if (Hero.y - 1 >= 0)
+                if (hero.y - 1 >= 0)
                 {
-                    Hero.y -= 1;
+                    hero.y -= 1;
                 }
             }
             else if (key.Key == ConsoleKey.DownArrow)
             {
-                if (Hero.y + 1 <= gameFieldHeight)
+                if (hero.y + 1 <= gameFieldHeight)
                 {
-                    Hero.y += 1;
+                    hero.y += 1;
                 }
             }
             else if (key.Key == ConsoleKey.Q)
@@ -268,13 +268,12 @@ namespace ScorpicoreRush
             Console.ForegroundColor = color;
             Console.SetCursorPosition(positionX, positionY);
             Console.Write(menuText);
-
         }
 
         public static void PrintMenu(int points, char playerLives, int level)
         {
             PrintTextInGameMenu(gameFieldWidth + 22, 4, points.ToString(), ConsoleColor.Gray);
-            PrintTextInGameMenu(gameFieldWidth + 20, 6, new string(playerLives, Hero.lives), ConsoleColor.Red);  //TODO: Print this according to the logic for loosing lives 
+            PrintTextInGameMenu(gameFieldWidth + 20, 6, new string(playerLives, hero.lives), ConsoleColor.Red);  //TODO: Print this according to the logic for loosing lives 
             PrintTextInGameMenu(gameFieldWidth + 22, 8, level.ToString(), ConsoleColor.Gray);
         }
 
@@ -290,7 +289,6 @@ namespace ScorpicoreRush
             PrintTextInGameMenu(gameFieldWidth + 11, 4, "Points: ", ConsoleColor.DarkGray);
             PrintTextInGameMenu(gameFieldWidth + 11, 6, "Lives: ", ConsoleColor.DarkGray);
             PrintTextInGameMenu(gameFieldWidth + 11, 8, "Level: ", ConsoleColor.DarkGray);
-
         }
 
         public static void DrawDownBorder()
@@ -321,7 +319,6 @@ namespace ScorpicoreRush
 
             switch (key.Key)
             {
-
                 case ConsoleKey.D1: keyList.Add(key);
                     break;
                 case ConsoleKey.D2: keyList.Add(key);
@@ -337,6 +334,7 @@ namespace ScorpicoreRush
                 default:
                     break;
             }
+
             for (int i = 0; i < weapons.Length; i++)
             {
                 if (keyList.Last().KeyChar.ToString() == i.ToString())
@@ -345,7 +343,6 @@ namespace ScorpicoreRush
                 }
             }
             return currentWeapon;
-
         }
 
         public static void GenerateNewRowRocks()
@@ -408,16 +405,7 @@ namespace ScorpicoreRush
                 }
             }
 
-            PrintOnPosition(Hero.x, Hero.y, Hero.avatar, ConsoleColor.White);
-
+            PrintOnPosition(hero.x, hero.y, hero.avatar, hero.color);
         }
     }
 }
-
-
-
-
-
-
-
-

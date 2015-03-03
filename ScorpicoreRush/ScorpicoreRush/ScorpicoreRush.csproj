@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Score.cs" />
+    <Compile Include="Scorpicore.cs" />
     <Compile Include="Start.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Game.cs" />
