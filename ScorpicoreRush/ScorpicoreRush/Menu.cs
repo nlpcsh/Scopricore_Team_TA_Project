@@ -81,13 +81,16 @@
                 if (i == selection)
                 {
                     Console.ForegroundColor = ConsoleColor.Black;
-                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.BackgroundColor = ConsoleColor.Red;
                     Console.WriteLine(Options[selection]);
                     Console.ResetColor();
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.BackgroundColor = ConsoleColor.Black;
                     Console.WriteLine(Options[i]);
+                    Console.ResetColor();
                 }
             }
         }

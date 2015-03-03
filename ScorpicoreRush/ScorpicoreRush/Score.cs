@@ -23,7 +23,8 @@ namespace ScorpicoreRush
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\n         HIGH SCORES\n");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Green;
+
             Console.WriteLine(FormatSpecifier, BorderLine);
 
             try
