@@ -10,6 +10,11 @@ namespace ScorpicoreRush
 {
     internal class Scores
     {
+        static char HorizontalBorderSymbol = '-';
+        static char VerticalBorderSymbol = '|';
+        static string BorderLine = new String(HorizontalBorderSymbol, 21);
+        static string FormatSpecifier = "{0,25}";
+
         public static void ShowHighScores()
         {
             SetUpWindow();
@@ -17,6 +22,7 @@ namespace ScorpicoreRush
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\n         HIGH SCORES\n");
             Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine(FormatSpecifier, BorderLine);
 
             try
             {
@@ -28,6 +34,7 @@ namespace ScorpicoreRush
                     while (line != null)
                     {
                         Console.WriteLine("{0,25}", line);
+                        Console.WriteLine(FormatSpecifier, BorderLine);
                         line = streamReader.ReadLine();
                     }
                 }
@@ -69,9 +76,9 @@ namespace ScorpicoreRush
             var streamWriter = new StreamWriter(@"..\..\Statistics.txt", true);
             using (streamWriter)
             {
-                streamWriter.WriteLine("*********************");
+                streamWriter.WriteLine(BorderLine);
                 streamWriter.WriteLine("* {0,-12}->  {1} *", playerName, playerPoints);
-                streamWriter.WriteLine("*********************");
+                streamWriter.WriteLine(BorderLine);
             }
         }
 
