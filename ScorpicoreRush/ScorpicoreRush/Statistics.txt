@@ -29,3 +29,4 @@ qqq         ->  0
 aa          ->  9
 lah         ->  0
 gg          ->  0
+elfoles     -> 22

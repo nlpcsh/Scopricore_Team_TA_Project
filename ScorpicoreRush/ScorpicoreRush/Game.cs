@@ -10,6 +10,10 @@ namespace ScorpicoreRush
 {
     class Game
     {
+        static string FilePathSoundReload = @"..\..\reload.wav";
+        static string FilePathSoundPopAndExplosion = @"..\..\Pop_And_Explosion.wav";
+        static string FilePathSoundFireWeapon = @"..\..\FireWeapon.wav";
+
         static int WindowWidth = 100;
         static int WindowHeight = 30;
 
@@ -26,7 +30,7 @@ namespace ScorpicoreRush
         static int TimeToSleep = 200;
 
         static int difficulty = 10; // % of each row covered with rocks
-        static int maxRocksPerRow = 10; // The max number of rocks per row. Integer division
+        static int maxRocksPerRow = (int)(difficulty / 100m * GameFieldWidth); // The max number of rocks per row. Integer division
 
         static char[,] rocksMatrix = new char[GameFieldHeight + 1, GameFieldWidth]; // The first row keeps new rocks positions
 
@@ -103,7 +107,7 @@ namespace ScorpicoreRush
                             // bullet hit a rock !  // TODO - need to be improved
                             if ((rocksMatrix[bulletY, bulletX] != ' ') || (rocksMatrix[bulletY + 1, bulletX] != ' '))
                             {
-                                using (SoundPlayer bulletHitARockSound = new SoundPlayer(@"..\..\Pop_And_Explosion.wav"))
+                                using (SoundPlayer bulletHitARockSound = new SoundPlayer(FilePathSoundPopAndExplosion))
                                 {
                                     bulletHitARockSound.Play();
                                 }
@@ -120,7 +124,6 @@ namespace ScorpicoreRush
                             if (hero.currentWeapon.Equals("^") || hero.currentWeapon.Equals("@") || hero.currentWeapon.Equals("*") ||
                                 hero.currentWeapon.Equals("o") || hero.currentWeapon.Equals("!") || hero.currentWeapon.Equals("$"))
                             {
-                                //Console.WriteLine(currentWeapon);
                                 PrintOnPosition(bulletX, bulletY, hero.currentWeapon, ConsoleColor.Cyan);
                             }
                             else
@@ -132,8 +135,6 @@ namespace ScorpicoreRush
                                     case 2: Console.Write("\\"); break;
                                     case 3: Console.Write("|"); break;
                                 }
-
-                                //y--;
                                 bulletY -= 2; // faster movement of the bullet
                             }
 
@@ -204,7 +205,7 @@ namespace ScorpicoreRush
 
         public static void RestartGame()
         {
-            using (SoundPlayer restartLevel = new SoundPlayer(@"..\..\reload.wav"))
+            using (SoundPlayer restartLevel = new SoundPlayer(FilePathSoundReload))
             {
                 restartLevel.Play();
             }
@@ -290,7 +291,7 @@ namespace ScorpicoreRush
 
         public static void FireWeapon()
         {
-            using (SoundPlayer fireWeapon = new SoundPlayer(@"..\..\FireWeapon.wav"))
+            using (SoundPlayer fireWeapon = new SoundPlayer(FilePathSoundFireWeapon))
             {
                 fireWeapon.Play();
                 //Thread.Sleep(50);
